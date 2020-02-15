@@ -1,0 +1,11 @@
+.header .header__navbar {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.header .header__navbar .header__logo {
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.header .header__navbar .header__icons {
+  border-color: rgba(0, 0, 0, 0.1);
+}

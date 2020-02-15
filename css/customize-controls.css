@@ -1,0 +1,29 @@
+#customize-theme-controls .accordion-section-title .pull-right {
+    float: right !important;
+}
+
+#customize-theme-controls .accordion-section-title .label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: .75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    margin-top: .25em;
+}
+
+#customize-theme-controls .accordion-section-title .label-primary {
+    background-color: #2487ca;
+}
+
+#customize-theme-controls .customize-pane-parent .accordion-section-title .label.pull-right {
+    margin-right: 30px;
+}
+
+#customize-theme-controls .customize-pane-child .accordion-section-title .label.pull-right {
+    margin-right: 10px;
+}
