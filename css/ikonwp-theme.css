@@ -363,26 +363,26 @@ pre {
   color: #000;
 }
 
-#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu {
+#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu {
   border: 0;
   background: none;
 }
 
-#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-header {
+#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-header, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu .dropdown-header {
   color: #000;
 }
 
-#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item {
+#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu .dropdown-item {
   color: #555;
   background: none;
 }
 
-#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item:hover, #ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item:focus {
+#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item:hover, #ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item:focus, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu .dropdown-item:hover, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu .dropdown-item:focus {
   color: #000;
   background: none;
 }
 
-#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item.active, #ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item:active {
+#ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item.active, #ikonwp-main-navbar.bg-transparent .dropdown .dropdown-menu .dropdown-item:active, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu .dropdown-item.active, #ikonwp-main-navbar.bg--transparent .dropdown .dropdown-menu .dropdown-item:active {
   color: #000;
   background: none;
 }
@@ -1202,16 +1202,16 @@ pre {
   border-color: rgba(0, 0, 0, 0.1);
 }
 
-.header .header__navbar.bg--transparent {
+.header .header__navbar.bg-transparent, .header .header__navbar.bg--transparent {
   border-color: rgba(255, 255, 255, 0.2);
   background: transparent;
 }
 
-.header .header__navbar.bg--transparent .header__logo {
+.header .header__navbar.bg-transparent .header__logo, .header .header__navbar.bg--transparent .header__logo {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.header .header__navbar.bg--transparent .header__icons {
+.header .header__navbar.bg-transparent .header__icons, .header .header__navbar.bg--transparent .header__icons {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -1282,73 +1282,83 @@ pre {
   color: inherit;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__logo, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo a {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__logo a, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo a {
   color: #fff !important;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo a:focus {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__logo a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__logo a:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__logo a:focus {
   color: rgba(255, 255, 255, 0.7) !important;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-toggler,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-toggler,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-toggler, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-toggler,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-toggler {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav .nav-link,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link:active,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav .nav-link:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav .nav-link:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav .nav-link:active,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link:hover,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link:focus,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link:active, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav .nav-link:active,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link:hover,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link:focus,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav .nav-link:active {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav.sm-collapsible .dropdown-item,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:active,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:active,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item:hover,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item:focus,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item:active, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item:active,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item:hover,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item:focus,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item:active {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item.highlighted,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar .navbar-nav.sm-collapsible .dropdown-item.highlighted,
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item.highlighted, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar .navbar-nav.sm-collapsible .dropdown-item.highlighted,
 .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent #ikonwp-main-navbar.navbar .navbar-nav.sm-collapsible .dropdown-item.highlighted {
   color: #fff !important;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar-text, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text a {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar-text a, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text a {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text a:focus {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar-text a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .navbar-text a:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .navbar-text a:focus {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__icons a {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__icons a, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__icons a {
   color: #fff;
 }
 
-.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__icons a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__icons a:focus {
+.header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__icons a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg-transparent .header__icons a:focus, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__icons a:hover, .header:not(.text--custom_color) .header__navbar:not(.text--custom_color).bg--transparent .header__icons a:focus {
   color: rgba(255, 255, 255, 0.7);
 }
 

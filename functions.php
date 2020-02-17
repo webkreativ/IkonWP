@@ -1,6 +1,6 @@
 <?php
 defined( 'ABSPATH' ) or die();
-define( 'IKONWP_VERSION', '2.0.3' );
+define( 'IKONWP_VERSION', '2.0.4' );
 
 /**
  * include
@@ -82,7 +82,7 @@ function ikonwp_styles() {
 	wp_enqueue_style( 'ikonwp-theme' );
 
 	/** ikonwp theme color */
-	$ikonwp_theme_color = get_theme_mod( 'ikonwp_colors_theme_color', false );
+	$ikonwp_theme_color = get_theme_mod( 'ikonwp_colors_theme_color', 'orange' );
 
 	if ( $ikonwp_theme_color ) {
 		wp_register_style( 'ikonwp-theme-color', get_template_directory_uri() . '/css/ikonwp-theme-' . esc_attr( $ikonwp_theme_color ) . '.min.css', array( 'ikonwp-theme' ), IKONWP_VERSION );

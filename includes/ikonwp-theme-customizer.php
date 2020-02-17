@@ -200,7 +200,7 @@ class IkonWP_Customize {
 
 		/** header - navbar - background type */
 		$wp_customize->add_setting( 'ikonwp_header_navbar_background_type', array(
-			'navbar'            => 'transparent',
+			'default'           => 'theme_color',
 			'sanitize_callback' => 'ikonwp_sanitize_select',
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options'
@@ -212,6 +212,7 @@ class IkonWP_Customize {
 			'settings'    => 'ikonwp_header_navbar_background_type',
 			'type'        => 'select',
 			'choices'     => array(
+				'theme_color'  => __( 'Theme Color', 'ikonwp' ),
 				'transparent'  => __( 'Transparent', 'ikonwp' ),
 				'custom_color' => __( 'Custom Background Color', 'ikonwp' )
 			),
@@ -769,8 +770,8 @@ class IkonWP_Customize {
 		}
 
 		/** header */
-		$ikonwp_header_default_background_type = get_theme_mod( 'ikonwp_header_default_background_type' );
-		$ikonwp_header_navbar_background_type  = get_theme_mod( 'ikonwp_header_navbar_background_type' );
+		$ikonwp_header_default_background_type = get_theme_mod( 'ikonwp_header_default_background_type', 'theme_color' );
+		$ikonwp_header_navbar_background_type  = get_theme_mod( 'ikonwp_header_navbar_background_type', 'theme_color' );
 
 		/** header custom background image */
 		if ( 'custom_image' == $ikonwp_header_default_background_type ) {
@@ -1219,7 +1220,7 @@ function ikonwp_get_google_fonts_subsets() {
  */
 function ikonwp_body_theme_color_class( $classes ) {
 
-	$ikonwp_colors_theme_color = get_theme_mod( 'ikonwp_colors_theme_color', false );
+	$ikonwp_colors_theme_color = get_theme_mod( 'ikonwp_colors_theme_color', 'orange' );
 
 	if ( $ikonwp_colors_theme_color ) {
 		$classes[] = 'ikonwp-theme-' . $ikonwp_colors_theme_color;
@@ -1284,7 +1285,7 @@ add_filter( 'ikonwp_header_navbar_container_class', 'ikonwp_header_navbar_contai
  */
 function ikonwp_header_background_type_class( $classes ) {
 
-	$backround_type = get_theme_mod( 'ikonwp_header_default_background_type' );
+	$backround_type = get_theme_mod( 'ikonwp_header_default_background_type', 'theme_color' );
 
 	/** custom image additional condition */
 	if ( 'custom_image' == $backround_type ) {
@@ -1338,7 +1339,18 @@ add_filter( 'ikonwp_header_class', 'ikonwp_header_text_color_class' );
  */
 function ikonwp_header_navbar_background_type_class( $classes ) {
 
-	$backround_type = get_theme_mod( 'ikonwp_header_navbar_background_type' );
+	$backround_type = get_theme_mod( 'ikonwp_header_navbar_background_type', 'theme_color' );
+
+	/** default bg */
+	if ( 'theme_color' == $backround_type ) {
+		if ( ! get_theme_mod( 'ikonwp_colors_theme_color', 'orange' ) ) {
+			/** without color set bg white */
+			$classes[] = 'bg-white';
+		} else {
+			/** with color set bg transparent */
+			$classes[] = 'bg--transparent';
+		}
+	}
 
 	/** custom color additional condition */
 	if ( 'custom_color' == $backround_type ) {
