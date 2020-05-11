@@ -11,6 +11,15 @@
 
                 <section <?php ikonwp_content_col_class(); ?>>
 
+					<?php if ( ! get_theme_mod( 'ikonwp_header_title_display', true ) ): ?>
+
+                        <div <?php ikonwp_content_title_class( 'content__title' ); ?>>
+                            <h1>
+								<?php ikonwp_the_title(); ?>
+                            </h1>
+                        </div>
+					<?php endif; ?>
+
 					<?php if ( have_posts() ) : ?>
 						<?php while ( have_posts() ) : ?>
 							<?php the_post(); ?>
@@ -49,7 +58,8 @@
                 </section>
 
 				<?php if ( is_active_sidebar( 'right' ) ) : ?>
-                    <aside <?php ikonwp_right_sidebar_col_class( array( 'right-sidebar', 'widget-sidebar' ) ); ?> role="complementary">
+                    <aside <?php ikonwp_right_sidebar_col_class( array( 'right-sidebar', 'widget-sidebar' ) ); ?>
+                            role="complementary">
 						<?php dynamic_sidebar( 'right' ); ?>
                     </aside>
 				<?php endif; ?>

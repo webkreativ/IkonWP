@@ -868,6 +868,45 @@ function ikonwp_get_content_col_class( $class = '' ) {
 
 /**
  * IkonWP
+ * content title class
+ *
+ * @param string $class
+ */
+function ikonwp_content_title_class( $class = '' ) {
+	echo 'class="' . join( ' ', ikonwp_get_content_title_class( $class ) ) . '"';
+}
+
+/**
+ * IkonWP
+ * get content title class
+ *
+ * @param string $class
+ *
+ * @return array
+ */
+function ikonwp_get_content_title_class( $class = '' ) {
+
+	$classes = array();
+
+	if ( $class ) {
+		if ( ! is_array( $class ) ) {
+			$class = preg_split( '#\s+#', $class );
+		}
+		$classes = array_map( 'esc_attr', $class );
+	} else {
+		// Ensure that we always coerce class to being an array.
+		$class = array();
+	}
+
+	$classes = array_map( 'esc_attr', $classes );
+
+	$classes = apply_filters( 'ikonwp_content_title_class', $classes, $class );
+
+	return array_unique( $classes );
+}
+
+/**
+ * IkonWP
  * right sidebar col class
  *
  * @param string $class
