@@ -868,23 +868,23 @@ function ikonwp_get_content_col_class( $class = '' ) {
 
 /**
  * IkonWP
- * sidebar col class
+ * right sidebar col class
  *
  * @param string $class
  */
 function ikonwp_right_sidebar_col_class( $class = '' ) {
-	echo 'class="' . join( ' ', ikonwp_get_sidebar_col_class( $class ) ) . '"';
+	echo 'class="' . join( ' ', ikonwp_get_right_sidebar_col_class( $class ) ) . '"';
 }
 
 /**
  * IkonWP
- * get sidebar col class
+ * get right sidebar col class
  *
  * @param string $class
  *
  * @return array
  */
-function ikonwp_get_sidebar_col_class( $class = '' ) {
+function ikonwp_get_right_sidebar_col_class( $class = '' ) {
 
 	$classes = array();
 
