@@ -1,9 +1,9 @@
 == IkonWP ==
 Contributors: ikonpress
 Requires at least: 4.9
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.6
-Stable tag: 2.0.4
+Stable tag: 2.0.5
 License: GNU General Public License v3.0 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Tags: one-column, two-columns, right-sidebar, custom-background, custom-colors, custom-menu, custom-logo, featured-images, footer-widgets, full-width-template, theme-options, translation-ready, blog
@@ -72,6 +72,10 @@ License: CC0 Public Domain, https://creativecommons.org/publicdomain/zero/1.0/de
 Unless otherwise specified, all the theme files, scripts and images are licensed under GNU General Public Licemse version 3.
 
 == Changelog ==
+
+2.0.5
+Released: May 16, 2020
+Improve CSS
 
 2.0.4
 Released: February 15, 2020
