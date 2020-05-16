@@ -74,6 +74,10 @@ Unless otherwise specified, all the theme files, scripts and images are licensed
 
 == Changelog ==
 
+2.0.5
+Released: May 16, 2020
+Improve CSS
+
 2.0.3
 Released: February 12, 2020
 Bugfix header text settings
