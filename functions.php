@@ -1,6 +1,7 @@
 <?php
 defined( 'ABSPATH' ) or die();
-define( 'IKONWP_VERSION', '2.0.4' );
+define( 'IKONWP_VERSION', '3.1.0' );
+define( 'IKONPRO_URL', 'https://ikonwp.com/pro' );
 
 /**
  * include
@@ -39,7 +40,7 @@ function ikonwp_after_setup_theme() {
 	/** custom header */
 	add_theme_support( 'custom-header', array(
 		'header-text'        => true,
-		'default-text-color' => false,
+		'default-text-color' => '',
 		'width'              => 1920,
 		'height'             => 560,
 		'flex-width'         => true,
@@ -72,10 +73,10 @@ function ikonwp_styles() {
 	wp_register_style( 'montserrat-google-fonts', 'https://fonts.googleapis.com/css?family=Montserrat:400,400i,500,500i,700,700i&display=swap&subset=latin-ext' );
 	wp_enqueue_style( 'montserrat-google-fonts' );
 
-	wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '5.12.0' );
-	wp_enqueue_style( 'font-awesome' );
+	wp_register_style( 'icomoon', get_template_directory_uri() . '/css/icomoon.min.css', array(), '1.0.1' );
+	wp_enqueue_style( 'icomoon' );
 
-	wp_register_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), '4.4.1' );
+	wp_register_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), '4.5.3' );
 	wp_enqueue_style( 'bootstrap' );
 
 	wp_register_style( 'ikonwp-theme', get_template_directory_uri() . '/css/ikonwp-theme.min.css', array(), IKONWP_VERSION );
@@ -87,10 +88,13 @@ function ikonwp_styles() {
 	if ( $ikonwp_theme_color ) {
 		wp_register_style( 'ikonwp-theme-color', get_template_directory_uri() . '/css/ikonwp-theme-' . esc_attr( $ikonwp_theme_color ) . '.min.css', array( 'ikonwp-theme' ), IKONWP_VERSION );
 		wp_enqueue_style( 'ikonwp-theme-color' );
+	} else {
+		wp_register_style( 'ikonwp-theme-color', false );
+		wp_enqueue_style( 'ikonwp-theme-color' );
 	}
 }
 
-add_action( 'wp_enqueue_scripts', 'ikonwp_styles' );
+add_action( 'wp_enqueue_scripts', 'ikonwp_styles', 10 );
 
 /**
  * Print styles
@@ -121,14 +125,14 @@ add_action( 'init', 'ikonwp_add_editor_style' );
 function ikonwp_scripts() {
 
 	/** popper js */
-	wp_register_script( 'popper', get_template_directory_uri() . '/js/popper.min.js', array(), '1.15.0' );
+	wp_register_script( 'popper', get_template_directory_uri() . '/js/popper.min.js', array(), '1.16.1' );
 	wp_enqueue_script( 'popper' );
 
 	/** bootstrap js */
 	wp_register_script( 'bootstrap', get_template_directory_uri() . '/js/bootstrap.min.js', array(
 		'jquery',
 		'popper'
-	), '4.4.1' );
+	), '4.5.3' );
 	wp_enqueue_script( 'bootstrap' );
 
 	/** respond js */
@@ -148,6 +152,16 @@ add_action( 'wp_enqueue_scripts', 'ikonwp_scripts' );
  * load in theme
  */
 function ikonwp_register_sidebar() {
+
+	register_sidebar( array(
+		'id'            => 'left',
+		'name'          => __( 'Left Sidebar', 'ikonwp' ),
+		'description'   => __( 'This is the left sidebar', 'ikonwp' ),
+		'before_title'  => '<h3 class="widget-title">',
+		'after_title'   => '</h3>',
+		'before_widget' => '<div id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</div>'
+	) );
 
 	register_sidebar( array(
 		'id'            => 'right',

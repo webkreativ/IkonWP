@@ -23,7 +23,7 @@
             $('#ikonwp-main-navbar').find('.navbar-toggler').on('click', function (e) {
                 e.preventDefault();
 
-                $(this).find('.fa').toggleClass('d-none');
+                $(this).find('[class^="icon-"]').toggleClass('d-none');
             });
         },
 
@@ -35,8 +35,8 @@
             $('[data-toggle="header-search"]').on('click', function (e) {
                 e.preventDefault();
 
-                $(this).find('.fa').toggleClass('d-none');
-                $('.header__search').toggleClass('d-xl-block');
+                $(this).find('[class^="icon-"]').toggleClass('d-none');
+                $('.header__search').toggleClass('d-block').toggleClass('d-xl-block');
             });
         }
     };

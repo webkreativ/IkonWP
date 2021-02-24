@@ -1,13 +1,15 @@
 <?php get_header(); ?>
 
-    <header <?php ikonwp_header_class( 'header' ); ?> role="banner">
-		<?php get_template_part( 'template-parts/header/navbar' ); ?>
-		<?php get_template_part( 'template-parts/header/title' ); ?>
-    </header>
-
     <main id="content" <?php ikonwp_main_class( array( 'main', 'section' ) ); ?> role="main">
         <div class="container">
             <div class="row">
+
+				<?php if ( is_active_sidebar( 'left' ) ) : ?>
+                    <aside <?php ikonwp_left_sidebar_col_class( array( 'left-sidebar', 'widget-sidebar' ) ); ?>
+                            role="complementary">
+						<?php dynamic_sidebar( 'left' ); ?>
+                    </aside>
+				<?php endif; ?>
 
                 <section <?php ikonwp_content_col_class(); ?>>
 

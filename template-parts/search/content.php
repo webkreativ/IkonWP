@@ -25,7 +25,7 @@
 
     <ul class="list-icon list-icon--inline mb-4">
         <li>
-            <i class="fa fa-calendar-alt"></i>
+            <i class="icon-calendar-line"></i>
             <a href="<?php the_permalink(); ?>">
                 <time datetime="<?php echo get_the_date( 'Y-m-d H:i' ); ?>">
 					<?php echo get_the_date(); ?>
@@ -34,20 +34,20 @@
         </li>
 
         <li>
-            <i class="fa fa-user-circle"></i>
+            <i class="icon-user-line"></i>
 			<?php the_author_posts_link(); ?>
         </li>
 
 		<?php if ( has_category() ) : ?>
             <li>
-                <i class="fa fa-folder-open"></i>
+                <i class="icon-folders-line"></i>
 				<?php the_category( ', ' ); ?>
             </li>
 		<?php endif; ?>
 
 		<?php if ( ! post_password_required() ) : ?>
             <li>
-                <i class="fa fa-comment"></i>
+                <i class="icon-discuss-line"></i>
 				<?php comments_popup_link( esc_html__( 'No Comments', 'ikonwp' ), esc_html__( '1 Comment', 'ikonwp' ), esc_html__( '% Comments', 'ikonwp' ) ); ?>
             </li>
 		<?php endif; ?>
@@ -61,13 +61,13 @@
         <a href="<?php the_permalink(); ?>" class="btn btn--text more-link">
 			<?php _e( 'Read more', 'ikonwp' ); ?>
             <span class="screen-reader-text"><?php the_title(); ?></span>
-            <i class="fa fa-angle-right"></i>
+            <i class="icon-arrow-right"></i>
         </a>
     </p>
 
 	<?php if ( has_tag() ): ?>
         <ul class="list-icon list-icon--inline">
-			<?php the_tags( '<li><i class="fa fa-tag"></i>', ', ', '</li>' ); ?>
+			<?php the_tags( '<li><i class="icon-tag-line"></i>', ', ', '</li>' ); ?>
         </ul>
 	<?php endif; ?>
 </article>

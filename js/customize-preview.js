@@ -18,7 +18,9 @@
 
             if (backgroundColor && 'custom_color' === backgroundTypeValue()) {
                 $header.addClass('bg--custom_color');
-                $header.css('cssText', 'background-color: ' + backgroundColor + '!important');
+                $header.each(function () {
+                    this.style.setProperty('background-color', backgroundColor, 'important');
+                });
             } else {
                 $header.css('background-color', '');
                 $header.removeClass('bg--custom_color');
@@ -32,7 +34,9 @@
 
             if (backgroundColor && 'custom_color' === backgroundTypeValue()) {
                 $headerNavbar.addClass('bg--custom_color');
-                $headerNavbar.css('cssText', 'background-color: ' + backgroundColor + '!important');
+                $headerNavbar.each(function () {
+                    this.style.setProperty('background-color', backgroundColor, 'important');
+                });
             } else {
                 $headerNavbar.css('background-color', '');
                 $headerNavbar.removeClass('bg--custom_color');
@@ -42,6 +46,7 @@
 
     wp.customize('header_textcolor', 'ikonwp_header_navbar_text_color', 'ikonwp_header_title_text_color', function (value, navbarValue, titleValue) {
         value.bind(function (headerTextcolor) {
+
             var headerTextcolorSelector = ['.header.text--custom_color'];
 
             if (!navbarValue()) {
@@ -49,11 +54,11 @@
                     '.header.text--custom_color .header__navbar .header__logo, .header.text--custom_color .header__navbar .header__logo a, ' +
                     '.header .header__navbar.text--custom_color .header__logo, .header .header__navbar.text--custom_color .header__logo a, ' +
                     '.header.text--custom_color .header__navbar .navbar-toggler, ' +
-                    '.header .header__navbar.text--custom_color .navbar-toggler' +
+                    '.header .header__navbar.text--custom_color .navbar-toggler, ' +
                     '.header.text--custom_color .header__navbar .navbar-nav .nav-link, ' +
                     '.header .header__navbar.text--custom_color .navbar-nav .nav-link, ' +
-                    '.header.text--custom_color .header__navbar .navbar-nav.sm-collapsible .dropdown .dropdown-menu .dropdown-item, ' +
-                    '.header .header__navbar.text--custom_color .navbar-nav.sm-collapsible .dropdown .dropdown-menu .dropdown-item, ' +
+                    '.header.text--custom_color .header__navbar .header__html, ' +
+                    '.header .header__navbar.text--custom_color .header__html, ' +
                     '.header.text--custom_color .header__navbar .header__icons, .header.text--custom_color .header__navbar .header__icons a, ' +
                     '.header .header__navbar.text--custom_color .header__icons, .header .header__navbar.text--custom_color .header__icons a'
                 );
@@ -65,9 +70,11 @@
                 );
             }
 
-            if (headerTextcolor) {
+            if (headerTextcolor && 'blank' !== headerTextcolor) {
                 $('.header').addClass('text--custom_color');
-                $(headerTextcolorSelector.join(', ')).css('cssText', 'color: ' + headerTextcolor + '!important');
+                $(headerTextcolorSelector.join(', ')).each(function () {
+                    this.style.setProperty('color', headerTextcolor, 'important');
+                });
             } else {
                 $(headerTextcolorSelector.join(', ')).css('color', '');
                 $('.header').removeClass('text--custom_color');
@@ -81,17 +88,19 @@
                 '.header.text--custom_color .header__navbar .header__logo, .header.text--custom_color .header__navbar .header__logo a, ' +
                 '.header .header__navbar.text--custom_color .header__logo, .header .header__navbar.text--custom_color .header__logo a, ' +
                 '.header.text--custom_color .header__navbar .navbar-toggler, ' +
-                '.header .header__navbar.text--custom_color .navbar-toggler' +
+                '.header .header__navbar.text--custom_color .navbar-toggler, ' +
                 '.header.text--custom_color .header__navbar .navbar-nav .nav-link, ' +
                 '.header .header__navbar.text--custom_color .navbar-nav .nav-link, ' +
-                '.header.text--custom_color .header__navbar .navbar-nav.sm-collapsible .dropdown .dropdown-menu .dropdown-item, ' +
-                '.header .header__navbar.text--custom_color .navbar-nav.sm-collapsible .dropdown .dropdown-menu .dropdown-item, ' +
+                '.header.text--custom_color .header__navbar .header__html, ' +
+                '.header .header__navbar.text--custom_color .header__html, ' +
                 '.header.text--custom_color .header__navbar .header__icons, .header.text--custom_color .header__navbar .header__icons a, ' +
                 '.header .header__navbar.text--custom_color .header__icons, .header .header__navbar.text--custom_color .header__icons a';
 
             if (navbarTextColor) {
                 $('.header .header__navbar').addClass('text--custom_color');
-                $(navbarTextColorSelector).css('cssText', 'color: ' + navbarTextColor + '!important');
+                $(navbarTextColorSelector).each(function () {
+                    this.style.setProperty('color', navbarTextColor, 'important');
+                });
             } else {
                 $(navbarTextColorSelector).css('color', '');
                 $('.header .header__navbar').removeClass('text--custom_color');
@@ -107,7 +116,9 @@
 
             if (titleTextColor) {
                 $('.header .header__title').addClass('text--custom_color');
-                $(titleTextColorSelector).css('cssText', 'color: ' + titleTextColor + '!important');
+                $(titleTextColorSelector).each(function () {
+                    this.style.setProperty('color', titleTextColor, 'important');
+                });
             } else {
                 $(titleTextColorSelector).css('color', '');
                 $('.header .header__title').removeClass('text--custom_color');
@@ -117,7 +128,7 @@
 
     wp.customize('ikonwp_footer_text', function (value) {
         value.bind(function (text) {
-            $('.footer').find('.footer__text').text(text);
+            $('.footer').find('.footer__text').html(text);
         });
     });
 

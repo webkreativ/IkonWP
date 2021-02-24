@@ -1,8 +1,8 @@
 <footer class="footer" role="contentinfo">
 
     <aside class="footer__top" role="complementary" aria-label="<?php esc_attr_e( 'Footer', 'ikonwp' ); ?>">
-        <div class="container">
-            <div class="row">
+        <div <?php ikonwp_footer_top_container_class( 'container' ); ?>>
+            <div <?php ikonwp_footer_top_row_class( 'row' ); ?>>
 				<?php if ( is_active_sidebar( 'footer-first' ) ) : ?>
                     <div class="col">
 						<?php dynamic_sidebar( 'footer-first' ); ?>
@@ -31,7 +31,7 @@
     </aside>
 
     <div class="footer__bottom">
-        <div class="container">
+        <div <?php ikonwp_footer_bottom_container_class( 'container' ); ?>>
             <div class="row">
                 <div <?php ikonwp_footer_text_col_class( 'col' ); ?>>
                     <p class="footer__text">

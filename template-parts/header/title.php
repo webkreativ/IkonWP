@@ -3,13 +3,7 @@
     <div <?php ikonwp_header_title_class( 'header__title' ); ?>>
         <div class="container">
 
-			<?php if ( function_exists( 'lana_breadcrumb' ) ) : ?>
-                <div <?php ikonwp_breadcrumb_class( array( 'row' ) ); ?>>
-                    <div class="col-12">
-						<?php echo lana_breadcrumb(); ?>
-                    </div>
-                </div>
-			<?php endif; ?>
+			<?php do_action( 'ikonwp_breadcrumb' ); ?>
 
             <h1>
 				<?php ikonwp_the_title(); ?>

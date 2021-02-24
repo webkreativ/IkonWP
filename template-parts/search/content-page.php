@@ -25,7 +25,7 @@
 
     <ul class="list-icon list-icon--inline mb-4">
         <li>
-            <i class="fa fa-file-alt"></i>
+            <i class="icon-file-text-alt"></i>
             <span><?php _e( 'Page', 'ikonwp' ); ?></span>
         </li>
     </ul>
@@ -38,13 +38,13 @@
         <a href="<?php the_permalink(); ?>" class="btn btn--text more-link">
 			<?php _e( 'Read more', 'ikonwp' ); ?>
             <span class="screen-reader-text"><?php the_title(); ?></span>
-            <i class="fa fa-angle-right"></i>
+            <i class="icon-arrow-right"></i>
         </a>
     </p>
 
 	<?php if ( has_tag() ): ?>
         <ul class="list-icon list-icon--inline">
-			<?php the_tags( '<li><i class="fa fa-tag"></i>', ', ', '</li>' ); ?>
+			<?php the_tags( '<li><i class="icon-tag-line"></i>', ', ', '</li>' ); ?>
         </ul>
 	<?php endif; ?>
 </article>

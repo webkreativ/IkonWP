@@ -1,12 +1,12 @@
 == IkonWP ==
 Contributors: ikonpress
 Requires at least: 4.9
-Tested up to: 5.4
+Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 2.0.5
+Stable tag: 3.1.0
 License: GNU General Public License v3.0 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Tags: one-column, two-columns, right-sidebar, custom-background, custom-colors, custom-menu, custom-logo, featured-images, footer-widgets, full-width-template, theme-options, translation-ready, blog
+Tags: one-column, two-columns, three-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, custom-logo, featured-images, flexible-header, footer-widgets, full-width-template, theme-options, translation-ready, blog
 Donate link: https://www.paypal.me/webkreativnet/10USD
 
 == Description ==
@@ -62,16 +62,37 @@ Author: Vasil Dinkov, Vadikom Web Ltd.
 Source: http://www.smartmenus.org/
 License: Licensed under the MIT license
 
-Screenshot.png photo:
-Photographer: Kristin Hardwick
-Source: https://stocksnap.io/photo/0YJMZ7S8NH
-License: CC0 Public Domain, https://creativecommons.org/publicdomain/zero/1.0/deed.en
-
 == License ==
 
 Unless otherwise specified, all the theme files, scripts and images are licensed under GNU General Public Licemse version 3.
 
 == Changelog ==
+
+3.1.0
+Released: February 21, 2021
+Improve CSS
+Custom responsive breakpoints 
+
+3.0.3
+Released: February 02, 2021
+Improve CSS
+Fixed Elementor compatibility issue
+
+3.0.2
+Released: October 04, 2020
+Fixed full width page template
+
+3.0.1
+Released: October 04, 2020
+Improve CSS
+Fixed footer responsiveness
+Fixed BetterDocs compatibility issue
+
+3.0.0
+Released: September 14, 2020
+Improve CSS
+Add header builder
+Add left sidebar layout
 
 2.0.5
 Released: May 16, 2020

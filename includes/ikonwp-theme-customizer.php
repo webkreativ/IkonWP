@@ -15,14 +15,50 @@ class IkonWP_Customize {
 		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-alpha-color-control.php';
 		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-checkbox-multiple-control.php';
 
-		/**
-		 * Site Identity
-		 */
-		$wp_customize->get_setting( 'custom_logo' )->transport     = 'refresh';
-		$wp_customize->get_setting( 'blogname' )->transport        = 'postMessage';
-		$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-control.php';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-blank-control.php';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-builder-control.php';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-dimension-control.php';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-dimensions-control.php';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-slider-control.php';
+
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-pro-link-section.php';
+		require_once get_template_directory() . '/includes/customize-controls/class-ikonwp-customize-spacer-section.php';
+
+		/** register section types */
+		$wp_customize->register_section_type( 'IkonWP_Customize_Pro_Link_Section' );
+		$wp_customize->register_section_type( 'IkonWP_Customize_Spacer_Section' );
+
+		/** register control types */
+		$wp_customize->register_control_type( 'IkonWP_Customize_Builder_Control' );
+		$wp_customize->register_control_type( 'IkonWP_Customize_Dimension_Control' );
+		$wp_customize->register_control_type( 'IkonWP_Customize_Dimensions_Control' );
+		$wp_customize->register_control_type( 'IkonWP_Customize_Slider_Control' );
 
 		/**
+		 * IkonPro
+		 */
+		if ( ! apply_filters( 'ikonwp_is_pro', false ) ) {
+
+			$wp_customize->add_section( new IkonWP_Customize_Pro_Link_Section( $wp_customize, 'ikonwp_pro_link_section', array(
+				'title'    => esc_html_x( 'More Options Available in IkonPro', 'IkonPro upsell', 'ikonwp' ),
+				'url'      => esc_url( add_query_arg( array(
+					'utm_source'   => 'ikonwp-customizer',
+					'utm_medium'   => 'learn-more',
+					'utm_campaign' => 'theme-upsell'
+				), IKONPRO_URL ) ),
+				'priority' => 0
+			) ) );
+
+			$wp_customize->add_section( new IkonWP_Customize_Spacer_Section( $wp_customize, 'ikonwp_spacer_pro_link_section', array(
+				'priority' => 0
+			) ) );
+		}
+
+		/**
+		 * Site Identity
+		 * -- Mobile Logo (image)
+		 *
 		 * Display
 		 * -- Layout (select: Full Width, Boxed)
 		 *
@@ -32,6 +68,8 @@ class IkonWP_Customize {
 		 * ---- Background Image (image)
 		 * ---- Background Color (alphacolor)
 		 * ---- Text Color (color)
+		 * -- Top
+		 * ---- Layout (select: Full Width, Content Width)
 		 * -- Navbar
 		 * ---- Layout (select: Full Width, Content Width)
 		 * ---- Background Type (select: Transparent, Custom Background Color)
@@ -59,14 +97,23 @@ class IkonWP_Customize {
 		 * ---- Line Height (input: number)
 		 * ---- Text Transform (select)
 		 *
+		 * Blog
+		 * -- Layout (select: Default, Grid)
+		 * -- Grid Columns (select: 2)
+		 *
 		 * Sidebars
 		 * -- Default
+		 * ---- Left Sidebar - Archive - Display (select: Enabled, Disabled)
 		 * ---- Right Sidebar - Archive - Display (select: Enabled, Disabled)
+		 * ---- Left Sidebar - Singular - Display (select: Enabled, Disabled)
 		 * ---- Right Sidebar - Singular - Display (select: Enabled, Disabled)
 		 * -- Post
+		 * ---- Left Sidebar - Archive - Display (select: Enabled, Disabled)
 		 * ---- Right Sidebar - Archive - Display (select: Enabled, Disabled)
+		 * ---- Left Sidebar - Singular - Display (select: Enabled, Disabled)
 		 * ---- Right Sidebar - Singular - Display (select: Enabled, Disabled)
 		 * -- Page
+		 * ---- Left Sidebar - Singular - Display (select: Enabled, Disabled)
 		 * ---- Right Sidebar - Singular - Display (select: Enabled, Disabled)
 		 *
 		 * Footer
@@ -74,11 +121,50 @@ class IkonWP_Customize {
 		 */
 
 		/**
+		 * Site Identity
+		 */
+		$wp_customize->get_setting( 'custom_logo' )->transport     = 'refresh';
+		$wp_customize->get_setting( 'blogname' )->transport        = 'postMessage';
+		$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
+
+		$custom_logo_args = get_theme_support( 'custom-logo' );
+
+		/** site identity - mobile custom logo */
+		$wp_customize->add_setting( 'mobile_custom_logo', array(
+			'sanitize_callback' => 'absint',
+			'theme_supports'    => array( 'custom-logo' )
+		) );
+
+		$wp_customize->add_control( new WP_Customize_Cropped_Image_Control( $wp_customize, 'mobile_custom_logo', array(
+			'label'         => esc_html__( 'Mobile Logo', 'ikonwp' ),
+			'section'       => 'title_tagline',
+			'priority'      => 8,
+			'height'        => $custom_logo_args[0]['height'],
+			'width'         => $custom_logo_args[0]['width'],
+			'flex_height'   => $custom_logo_args[0]['flex-height'],
+			'flex_width'    => $custom_logo_args[0]['flex-width'],
+			'button_labels' => array(
+				'select'       => esc_html__( 'Select logo', 'ikonwp' ),
+				'change'       => esc_html__( 'Change logo', 'ikonwp' ),
+				'placeholder'  => esc_html__( 'No logo selected', 'ikonwp' ),
+				'frame_title'  => esc_html__( 'Select logo', 'ikonwp' ),
+				'frame_button' => esc_html__( 'Choose logo', 'ikonwp' )
+			)
+		) ) );
+
+		$wp_customize->selective_refresh->add_partial( 'mobile_custom_logo', array(
+			'settings'            => array( 'mobile_custom_logo' ),
+			'selector'            => '.mobile-custom-logo-link',
+			'render_callback'     => array( $wp_customize, '_render_custom_logo_partial' ),
+			'container_inclusive' => true
+		) );
+
+		/**
 		 * Display
 		 * options
 		 */
 		$wp_customize->add_section( 'ikonwp_display', array(
-			'title'      => __( 'Display', 'ikonwp' ),
+			'title'      => esc_html__( 'Display', 'ikonwp' ),
 			'priority'   => 35,
 			'capability' => 'edit_theme_options'
 		) );
@@ -91,16 +177,15 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_display_layout_select', array(
-			'label'       => __( 'Layout', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_display_layout', array(
+			'label'       => esc_html__( 'Layout', 'ikonwp' ),
 			'section'     => 'ikonwp_display',
-			'settings'    => 'ikonwp_display_layout',
 			'type'        => 'select',
 			'choices'     => array(
-				'full_width' => __( 'Full Width', 'ikonwp' ),
-				'boxed'      => __( 'Boxed', 'ikonwp' )
+				'full_width' => esc_html__( 'Full Width', 'ikonwp' ),
+				'boxed'      => esc_html__( 'Boxed', 'ikonwp' )
 			),
-			'description' => __( 'Select the body display layout', 'ikonwp' )
+			'description' => esc_html__( 'Select the body display layout', 'ikonwp' )
 		) );
 
 		/**
@@ -108,13 +193,145 @@ class IkonWP_Customize {
 		 * options
 		 */
 		$wp_customize->add_panel( 'ikonwp_header', array(
-			'title'    => __( 'Header', 'ikonwp' ),
+			'title'    => esc_html__( 'Header', 'ikonwp' ),
 			'priority' => 45
 		) );
 
+		/**  header - builder */
+		$wp_customize->add_section( 'ikonwp_header_builder', array(
+			'title'      => esc_html__( 'Builder', 'ikonwp' ),
+			'panel'      => 'ikonwp_header',
+			'priority'   => 0,
+			'capability' => 'edit_theme_options'
+		) );
+
+		/**
+		 * IkonWP Header Builder
+		 * switcher html
+		 */
+		ob_start(); ?>
+        <div class="ikonwp-responsive-switcher nav-tab-wrapper wp-clearfix">
+            <a href="#" class="nav-tab preview-desktop ikonwp-responsive-switcher-button" data-device="desktop">
+                <span class="dashicons dashicons-desktop"></span>
+                <span><?php esc_html_e( 'Desktop', 'ikonwp' ); ?></span>
+            </a>
+            <a href="#" class="nav-tab preview-tablet preview-mobile ikonwp-responsive-switcher-button"
+               data-device="tablet">
+                <span class="dashicons dashicons-smartphone"></span>
+                <span><?php esc_html_e( 'Tablet / Mobile', 'ikonwp' ); ?></span>
+            </a>
+        </div>
+        <span class="button button-secondary ikonwp-builder-hide ikonwp-builder-toggle">
+            <span class="dashicons dashicons-no"></span>
+            <?php esc_html_e( 'Hide', 'ikonwp' ); ?>
+        </span>
+        <span class="button button-primary ikonwp-builder-show ikonwp-builder-toggle">
+            <span class="dashicons dashicons-edit"></span>
+            <?php esc_html_e( 'Header Builder', 'ikonwp' ); ?>
+        </span>
+		<?php
+		$ikonwp_header_builder_switcher = ob_get_clean();
+
+		$wp_customize->add_control( new IkonWP_Customize_Blank_Control( $wp_customize, 'ikonwp_header_builder_actions', array(
+			'section'     => 'ikonwp_header_builder',
+			'settings'    => array(),
+			'description' => $ikonwp_header_builder_switcher,
+			'priority'    => 10
+		) ) );
+
+		$ikonwp_header_builder_settings = array(
+			'top_left'    => 'ikonwp_header_builder_elements_top_left',
+			'top_center'  => 'ikonwp_header_builder_elements_top_center',
+			'top_right'   => 'ikonwp_header_builder_elements_top_right',
+			'main_left'   => 'ikonwp_header_builder_elements_main_left',
+			'main_center' => 'ikonwp_header_builder_elements_main_center',
+			'main_right'  => 'ikonwp_header_builder_elements_main_right'
+		);
+
+		$ikonwp_header_builder_defaults = array(
+			'ikonwp_header_builder_elements_top_left'    => array(),
+			'ikonwp_header_builder_elements_top_center'  => array(),
+			'ikonwp_header_builder_elements_top_right'   => array(),
+			'ikonwp_header_builder_elements_main_left'   => array( 'logo' ),
+			'ikonwp_header_builder_elements_main_center' => array( 'menu-1' ),
+			'ikonwp_header_builder_elements_main_right'  => array( 'search-dropdown' )
+		);
+
+		foreach ( $ikonwp_header_builder_settings as $setting ) {
+			$wp_customize->add_setting( $setting, array(
+				'default'           => ikonwp_array_value( $ikonwp_header_builder_defaults, $setting ),
+				'sanitize_callback' => 'ikonwp_sanitize_builder'
+			) );
+		}
+
+		$wp_customize->add_control( new IkonWP_Customize_Builder_Control( $wp_customize, 'ikonwp_header_builder_elements', array(
+			'settings' => $ikonwp_header_builder_settings,
+			'section'  => 'ikonwp_header_builder',
+			'label'    => esc_html__( 'Desktop Header', 'ikonwp' ),
+			'choices'  => array(
+				'logo'            => '<span class="dashicons dashicons-admin-home"></span>' . esc_html__( 'Logo', 'ikonwp' ),
+				'menu-1'          => '<span class="dashicons dashicons-admin-links"></span>' . sprintf( esc_html__( 'Menu %s', 'ikonwp' ), 1 ),
+				'search-dropdown' => '<span class="dashicons dashicons-search"></span>' . esc_html__( 'Search Dropdown', 'ikonwp' )
+			),
+			'labels'   => array(
+				'top_left'    => esc_html__( 'Top - Left', 'ikonwp' ),
+				'top_center'  => esc_html__( 'Top - Center', 'ikonwp' ),
+				'top_right'   => esc_html__( 'Top - Right', 'ikonwp' ),
+				'main_left'   => esc_html__( 'Main - Left', 'ikonwp' ),
+				'main_center' => esc_html__( 'Main - Center', 'ikonwp' ),
+				'main_right'  => esc_html__( 'Main - Right', 'ikonwp' )
+			),
+			'priority' => 10
+		) ) );
+
+		$ikonwp_header_builder_mobile_settings = array(
+			'top_left'    => 'ikonwp_header_builder_mobile_elements_top_left',
+			'top_center'  => 'ikonwp_header_builder_mobile_elements_top_center',
+			'top_right'   => 'ikonwp_header_builder_mobile_elements_top_right',
+			'main_left'   => 'ikonwp_header_builder_mobile_elements_main_left',
+			'main_center' => 'ikonwp_header_builder_mobile_elements_main_center',
+			'main_right'  => 'ikonwp_header_builder_mobile_elements_main_right'
+		);
+
+		$ikonwp_header_builder_mobile_defaults = array(
+			'ikonwp_header_builder_mobile_elements_top_left'    => array(),
+			'ikonwp_header_builder_mobile_elements_top_center'  => array(),
+			'ikonwp_header_builder_mobile_elements_top_right'   => array(),
+			'ikonwp_header_builder_mobile_elements_main_left'   => array( 'logo' ),
+			'ikonwp_header_builder_mobile_elements_main_center' => array( 'menu-1' ),
+			'ikonwp_header_builder_mobile_elements_main_right'  => array( 'search-dropdown' )
+		);
+
+		foreach ( $ikonwp_header_builder_mobile_settings as $setting ) {
+			$wp_customize->add_setting( $setting, array(
+				'default'           => ikonwp_array_value( $ikonwp_header_builder_mobile_defaults, $setting ),
+				'sanitize_callback' => 'ikonwp_sanitize_builder'
+			) );
+		}
+
+		$wp_customize->add_control( new IkonWP_Customize_Builder_Control( $wp_customize, 'ikonwp_header_builder_mobile_elements', array(
+			'settings' => $ikonwp_header_builder_mobile_settings,
+			'section'  => 'ikonwp_header_builder',
+			'label'    => esc_html__( 'Mobile Header', 'ikonwp' ),
+			'choices'  => array(
+				'logo'            => '<span class="dashicons dashicons-admin-home"></span>' . esc_html__( 'Logo', 'ikonwp' ),
+				'menu-1'          => '<span class="dashicons dashicons-admin-links"></span>' . sprintf( esc_html__( 'Menu %s', 'ikonwp' ), 1 ),
+				'search-dropdown' => '<span class="dashicons dashicons-search"></span>' . esc_html__( 'Search Dropdown', 'ikonwp' )
+			),
+			'labels'   => array(
+				'top_left'    => esc_html__( 'Top - Left', 'ikonwp' ),
+				'top_center'  => esc_html__( 'Top - Center', 'ikonwp' ),
+				'top_right'   => esc_html__( 'Top - Right', 'ikonwp' ),
+				'main_left'   => esc_html__( 'Main - Left', 'ikonwp' ),
+				'main_center' => esc_html__( 'Main - Center', 'ikonwp' ),
+				'main_right'  => esc_html__( 'Main - Right', 'ikonwp' )
+			),
+			'priority' => 10
+		) ) );
+
 		/**  header - default */
 		$wp_customize->add_section( 'ikonwp_header_default', array(
-			'title'      => __( 'Default', 'ikonwp' ),
+			'title'      => esc_html__( 'Default', 'ikonwp' ),
 			'panel'      => 'ikonwp_header',
 			'priority'   => 1,
 			'capability' => 'edit_theme_options'
@@ -128,18 +345,17 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_header_default_background_type_select', array(
-			'label'       => __( 'Background Type', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_header_default_background_type', array(
+			'label'       => esc_html__( 'Background Type', 'ikonwp' ),
 			'section'     => 'ikonwp_header_default',
 			'priority'    => 1,
-			'settings'    => 'ikonwp_header_default_background_type',
 			'type'        => 'select',
 			'choices'     => array(
-				'theme_color'  => __( 'Theme Color', 'ikonwp' ),
-				'custom_image' => __( 'Custom Background Image', 'ikonwp' ),
-				'custom_color' => __( 'Custom Background Color', 'ikonwp' )
+				'theme_color'  => esc_html__( 'Theme Color', 'ikonwp' ),
+				'custom_image' => esc_html__( 'Custom Background Image', 'ikonwp' ),
+				'custom_color' => esc_html__( 'Custom Background Color', 'ikonwp' )
 			),
-			'description' => __( 'Select the header background type option', 'ikonwp' )
+			'description' => esc_html__( 'Select the header background type option', 'ikonwp' )
 		) );
 
 		/** header - default - background color */
@@ -150,29 +366,55 @@ class IkonWP_Customize {
 			'transport'         => 'postMessage'
 		) );
 
-		$wp_customize->add_control( new IkonWP_Customize_Alpha_Color_Control( $wp_customize, 'ikonwp_header_default_background_color_color', array(
-			'label'       => __( 'Background Color', 'ikonwp' ),
+		$wp_customize->add_control( new IkonWP_Customize_Alpha_Color_Control( $wp_customize, 'ikonwp_header_default_background_color', array(
+			'label'       => esc_html__( 'Background Color', 'ikonwp' ),
 			'section'     => 'ikonwp_header_default',
-			'settings'    => 'ikonwp_header_default_background_color',
 			'description' => esc_html__( 'Select the header background color', 'ikonwp' ),
 			'priority'    => 12
 		) ) );
 
 		/** header - default - background image */
-		$wp_customize->get_control( 'header_image' )->label    = __( 'Background Image', 'ikonwp' );
+		$wp_customize->get_control( 'header_image' )->label    = esc_html__( 'Background Image', 'ikonwp' );
 		$wp_customize->get_control( 'header_image' )->section  = 'ikonwp_header_default';
 		$wp_customize->get_control( 'header_image' )->priority = 3;
 
 		/** header - default - text color */
-		$wp_customize->get_control( 'header_textcolor' )->label    = __( 'Text Color', 'ikonwp' );
+		$wp_customize->get_control( 'header_textcolor' )->label    = esc_html__( 'Text Color', 'ikonwp' );
 		$wp_customize->get_control( 'header_textcolor' )->section  = 'ikonwp_header_default';
 		$wp_customize->get_control( 'header_textcolor' )->priority = 20;
 
 		$wp_customize->get_setting( 'header_textcolor' )->transport = 'postMessage';
 
+		/**  header - top */
+		$wp_customize->add_section( 'ikonwp_header_top', array(
+			'title'      => esc_html__( 'Top', 'ikonwp' ),
+			'panel'      => 'ikonwp_header',
+			'priority'   => 1,
+			'capability' => 'edit_theme_options'
+		) );
+
+		/** header - top - layout */
+		$wp_customize->add_setting( 'ikonwp_header_top_layout', array(
+			'default'           => 'full_width',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_header_top_layout', array(
+			'label'       => esc_html__( 'Layout', 'ikonwp' ),
+			'section'     => 'ikonwp_header_top',
+			'type'        => 'select',
+			'choices'     => array(
+				'full_width'    => esc_html__( 'Full Width', 'ikonwp' ),
+				'content_width' => esc_html__( 'Content Width', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the top layout', 'ikonwp' )
+		) );
+
 		/**  header - navbar */
 		$wp_customize->add_section( 'ikonwp_header_navbar', array(
-			'title'      => __( 'Navbar', 'ikonwp' ),
+			'title'      => esc_html__( 'Navbar', 'ikonwp' ),
 			'panel'      => 'ikonwp_header',
 			'priority'   => 2,
 			'capability' => 'edit_theme_options'
@@ -186,16 +428,15 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_header_navbar_layout_select', array(
-			'label'       => __( 'Layout', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_header_navbar_layout', array(
+			'label'       => esc_html__( 'Layout', 'ikonwp' ),
 			'section'     => 'ikonwp_header_navbar',
-			'settings'    => 'ikonwp_header_navbar_layout',
 			'type'        => 'select',
 			'choices'     => array(
-				'full_width'    => __( 'Full Width', 'ikonwp' ),
-				'content_width' => __( 'Content Width', 'ikonwp' )
+				'full_width'    => esc_html__( 'Full Width', 'ikonwp' ),
+				'content_width' => esc_html__( 'Content Width', 'ikonwp' )
 			),
-			'description' => __( 'Select the navbar layout', 'ikonwp' )
+			'description' => esc_html__( 'Select the navbar layout', 'ikonwp' )
 		) );
 
 		/** header - navbar - background type */
@@ -206,17 +447,16 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_header_navbar_background_type_select', array(
-			'label'       => __( 'Background Type', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_header_navbar_background_type', array(
+			'label'       => esc_html__( 'Background Type', 'ikonwp' ),
 			'section'     => 'ikonwp_header_navbar',
-			'settings'    => 'ikonwp_header_navbar_background_type',
 			'type'        => 'select',
 			'choices'     => array(
-				'theme_color'  => __( 'Theme Color', 'ikonwp' ),
-				'transparent'  => __( 'Transparent', 'ikonwp' ),
-				'custom_color' => __( 'Custom Background Color', 'ikonwp' )
+				'theme_color'  => esc_html__( 'Theme Color', 'ikonwp' ),
+				'transparent'  => esc_html__( 'Transparent', 'ikonwp' ),
+				'custom_color' => esc_html__( 'Custom Background Color', 'ikonwp' )
 			),
-			'description' => __( 'Select the navbar background type option', 'ikonwp' )
+			'description' => esc_html__( 'Select the navbar background type option', 'ikonwp' )
 		) );
 
 		/** header - navbar - background color */
@@ -227,29 +467,27 @@ class IkonWP_Customize {
 			'transport'         => 'postMessage'
 		) );
 
-		$wp_customize->add_control( new IkonWP_Customize_Alpha_Color_Control( $wp_customize, 'ikonwp_header_navbar_background_color_color', array(
-			'label'       => __( 'Background Color', 'ikonwp' ),
+		$wp_customize->add_control( new IkonWP_Customize_Alpha_Color_Control( $wp_customize, 'ikonwp_header_navbar_background_color', array(
+			'label'       => esc_html__( 'Background Color', 'ikonwp' ),
 			'section'     => 'ikonwp_header_navbar',
-			'settings'    => 'ikonwp_header_navbar_background_color',
 			'description' => esc_html__( 'Select the navbar background color', 'ikonwp' )
 		) ) );
 
 		/** header - navbar - text color */
 		$wp_customize->add_setting( 'ikonwp_header_navbar_text_color', array(
 			'sanitize_callback' => 'sanitize_hex_color',
-			'transport'         => 'postMessage',
+			'transport'         => 'postMessage'
 		) );
 
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_header_navbar_text_color_color', array(
-			'label'       => __( 'Text Color', 'ikonwp' ),
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_header_navbar_text_color', array(
+			'label'       => esc_html__( 'Text Color', 'ikonwp' ),
 			'section'     => 'ikonwp_header_navbar',
-			'settings'    => 'ikonwp_header_navbar_text_color',
-			'description' => esc_html__( 'Select the navbar text color', 'ikonwp' ),
+			'description' => esc_html__( 'Select the navbar text color', 'ikonwp' )
 		) ) );
 
 		/**  header - title */
 		$wp_customize->add_section( 'ikonwp_header_title', array(
-			'title'      => __( 'Title', 'ikonwp' ),
+			'title'      => esc_html__( 'Title', 'ikonwp' ),
 			'panel'      => 'ikonwp_header',
 			'priority'   => 3,
 			'capability' => 'edit_theme_options'
@@ -263,30 +501,28 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_header_title_display_select', array(
-			'label'       => __( 'Display', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_header_title_display', array(
+			'label'       => esc_html__( 'Display', 'ikonwp' ),
 			'section'     => 'ikonwp_header_title',
 			'priority'    => 1,
-			'settings'    => 'ikonwp_header_title_display',
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'Disabled', 'ikonwp' ),
-				'1' => __( 'Enabled', 'ikonwp' )
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
 			),
-			'description' => __( 'Select the header title display option', 'ikonwp' )
+			'description' => esc_html__( 'Select the header title display option', 'ikonwp' )
 		) );
 
 		/** header - title - text color */
 		$wp_customize->add_setting( 'ikonwp_header_title_text_color', array(
 			'sanitize_callback' => 'sanitize_hex_color',
-			'transport'         => 'postMessage',
+			'transport'         => 'postMessage'
 		) );
 
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_header_title_text_color_color', array(
-			'label'       => __( 'Text Color', 'ikonwp' ),
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_header_title_text_color', array(
+			'label'       => esc_html__( 'Text Color', 'ikonwp' ),
 			'section'     => 'ikonwp_header_title',
-			'settings'    => 'ikonwp_header_title_text_color',
-			'description' => esc_html__( 'Select the title text color', 'ikonwp' ),
+			'description' => esc_html__( 'Select the title text color', 'ikonwp' )
 		) ) );
 
 		/** header - title - text align */
@@ -297,17 +533,44 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_header_title_text_align_select', array(
-			'label'       => __( 'Text Align', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_header_title_text_align', array(
+			'label'       => esc_html__( 'Text Align', 'ikonwp' ),
 			'section'     => 'ikonwp_header_title',
-			'settings'    => 'ikonwp_header_title_text_align',
 			'type'        => 'select',
 			'choices'     => array(
-				'left'   => __( 'Left', 'ikonwp' ),
-				'center' => __( 'Center', 'ikonwp' ),
-				'right'  => __( 'Right', 'ikonwp' )
+				'left'   => esc_html__( 'Left', 'ikonwp' ),
+				'center' => esc_html__( 'Center', 'ikonwp' ),
+				'right'  => esc_html__( 'Right', 'ikonwp' )
 			),
-			'description' => __( 'Select the header title text align option', 'ikonwp' )
+			'description' => esc_html__( 'Select the header title text align option', 'ikonwp' )
+		) );
+
+		/**  header - elements: menu(s) */
+		$wp_customize->add_section( 'ikonwp_header_elements_menu', array(
+			'title'      => esc_html__( 'Elements: Menu(s)', 'ikonwp' ),
+			'panel'      => 'ikonwp_header',
+			'capability' => 'edit_theme_options'
+		) );
+
+		/** header - elements: (menu) - menu 1 - breakpoint */
+		$wp_customize->add_setting( 'ikonwp_header_elements_menu_1_breakpoint', array(
+			'default'           => 'lg',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_header_elements_menu_1_breakpoint', array(
+			'label'       => esc_html__( 'Menu 1 - Breakpoint', 'ikonwp' ),
+			'section'     => 'ikonwp_header_elements_menu',
+			'type'        => 'select',
+			'choices'     => array(
+				'sm' => esc_html__( 'Small (576px)', 'ikonwp' ),
+				'md' => esc_html__( 'Medium (768px)', 'ikonwp' ),
+				'lg' => esc_html__( 'Large (992px)', 'ikonwp' ),
+				'xl' => esc_html__( 'Extra large (1200px)', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Breakpoint, the menu below this value changes to mobile view', 'ikonwp' )
 		) );
 
 		/**
@@ -323,10 +586,9 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_colors_theme_color_select', array(
+		$wp_customize->add_control( 'ikonwp_colors_theme_color', array(
 			'label'       => esc_html__( 'Theme Color', 'ikonwp' ),
 			'section'     => 'colors',
-			'settings'    => 'ikonwp_colors_theme_color',
 			'type'        => 'select',
 			'choices'     => array(
 				''        => esc_html__( 'Grey', 'ikonwp' ),
@@ -347,10 +609,9 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_colors_primary_color_color', array(
-			'label'       => __( 'Primary Color', 'ikonwp' ),
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_colors_primary_color', array(
+			'label'       => esc_html__( 'Primary Color', 'ikonwp' ),
 			'section'     => 'colors',
-			'settings'    => 'ikonwp_colors_primary_color',
 			'description' => esc_html__( 'Select the primary color, and the first gradient color', 'ikonwp' )
 		) ) );
 
@@ -362,10 +623,9 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_colors_primary_color_hover_color', array(
-			'label'       => __( 'Primary Color - Hover Color', 'ikonwp' ),
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_colors_primary_color_hover', array(
+			'label'       => esc_html__( 'Primary Color - Hover Color', 'ikonwp' ),
 			'section'     => 'colors',
-			'settings'    => 'ikonwp_colors_primary_color_hover',
 			'description' => esc_html__( 'Select the primary hover color', 'ikonwp' )
 		) ) );
 
@@ -377,10 +637,9 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_colors_primary_color_gradient_color', array(
-			'label'       => __( 'Primary Color - Second Gradient Color', 'ikonwp' ),
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'ikonwp_colors_primary_color_gradient', array(
+			'label'       => esc_html__( 'Primary Color - Second Gradient Color', 'ikonwp' ),
 			'section'     => 'colors',
-			'settings'    => 'ikonwp_colors_primary_color_gradient',
 			'description' => esc_html__( 'Select the second color for the gradient', 'ikonwp' )
 		) ) );
 
@@ -392,13 +651,13 @@ class IkonWP_Customize {
 		$google_fonts_subsets = ikonwp_get_google_fonts_subsets();
 
 		$wp_customize->add_panel( 'ikonwp_typography', array(
-			'title'    => __( 'Typography', 'ikonwp' ),
+			'title'    => esc_html__( 'Typography', 'ikonwp' ),
 			'priority' => 45
 		) );
 
 		/** typography - body */
 		$wp_customize->add_section( 'ikonwp_typography_body', array(
-			'title'      => __( 'Body', 'ikonwp' ),
+			'title'      => esc_html__( 'Body', 'ikonwp' ),
 			'panel'      => 'ikonwp_typography',
 			'priority'   => 1,
 			'capability' => 'edit_theme_options'
@@ -411,15 +670,14 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_typography_body_font_family_select', array(
-			'label'       => __( 'Font Family', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_typography_body_font_family', array(
+			'label'       => esc_html__( 'Font Family', 'ikonwp' ),
 			'section'     => 'ikonwp_typography_body',
-			'settings'    => 'ikonwp_typography_body_font_family',
 			'type'        => 'select',
 			'choices'     => array_merge( array(
-				'' => __( 'None - Theme Default', 'ikonwp' )
+				'' => esc_html__( 'None - Theme Default', 'ikonwp' )
 			), $google_fonts ),
-			'description' => __( 'Select the body font family', 'ikonwp' )
+			'description' => esc_html__( 'Select the body font family', 'ikonwp' )
 		) );
 
 		/** typography - body - font subsets */
@@ -429,12 +687,11 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( new IkonWP_Customize_Checkbox_Multiple_Control( $wp_customize, 'ikonwp_typography_body_font_subsets_checkbox_multiple', array(
-			'label'       => __( 'Font Subsets', 'ikonwp' ),
+		$wp_customize->add_control( new IkonWP_Customize_Checkbox_Multiple_Control( $wp_customize, 'ikonwp_typography_body_font_subsets', array(
+			'label'       => esc_html__( 'Font Subsets', 'ikonwp' ),
 			'section'     => 'ikonwp_typography_body',
-			'settings'    => 'ikonwp_typography_body_font_subsets',
 			'choices'     => $google_fonts_subsets,
-			'description' => __( 'Select the body font subsets (Note: \'Latin\' always chosen by default)', 'ikonwp' )
+			'description' => esc_html__( 'Select the body font subsets (Note: \'Latin\' always chosen by default)', 'ikonwp' )
 		) ) );
 
 		/** typography - body - line height */
@@ -444,10 +701,9 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_typography_body_line_height_text', array(
-			'label'       => __( 'Line Height', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_typography_body_line_height', array(
+			'label'       => esc_html__( 'Line Height', 'ikonwp' ),
 			'section'     => 'ikonwp_typography_body',
-			'settings'    => 'ikonwp_typography_body_line_height',
 			'type'        => 'number',
 			'input_attrs' => array(
 				'min'  => 0,
@@ -457,7 +713,7 @@ class IkonWP_Customize {
 
 		/** typography - header */
 		$wp_customize->add_section( 'ikonwp_typography_header', array(
-			'title'      => __( 'Header', 'ikonwp' ),
+			'title'      => esc_html__( 'Header', 'ikonwp' ),
 			'panel'      => 'ikonwp_typography',
 			'priority'   => 2,
 			'capability' => 'edit_theme_options'
@@ -470,15 +726,14 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_typography_header_font_family_select', array(
-			'label'       => __( 'Font Family', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_typography_header_font_family', array(
+			'label'       => esc_html__( 'Font Family', 'ikonwp' ),
 			'section'     => 'ikonwp_typography_header',
-			'settings'    => 'ikonwp_typography_header_font_family',
 			'type'        => 'select',
 			'choices'     => array_merge( array(
-				'' => __( 'None - Theme Default', 'ikonwp' )
+				'' => esc_html__( 'None - Theme Default', 'ikonwp' )
 			), $google_fonts ),
-			'description' => __( 'Select the header font family', 'ikonwp' )
+			'description' => esc_html__( 'Select the header font family', 'ikonwp' )
 		) );
 
 		/** typography - header - font subsets */
@@ -488,12 +743,11 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( new IkonWP_Customize_Checkbox_Multiple_Control( $wp_customize, 'ikonwp_typography_header_font_subsets_checkbox_multiple', array(
-			'label'       => __( 'Font Subsets', 'ikonwp' ),
+		$wp_customize->add_control( new IkonWP_Customize_Checkbox_Multiple_Control( $wp_customize, 'ikonwp_typography_header_font_subsets', array(
+			'label'       => esc_html__( 'Font Subsets', 'ikonwp' ),
 			'section'     => 'ikonwp_typography_header',
-			'settings'    => 'ikonwp_typography_header_font_subsets',
 			'choices'     => $google_fonts_subsets,
-			'description' => __( 'Select the header font subsets (Note: \'Latin\' always chosen by default)', 'ikonwp' )
+			'description' => esc_html__( 'Select the header font subsets (Note: \'Latin\' always chosen by default)', 'ikonwp' )
 		) ) );
 
 		/** typography - header - line height */
@@ -503,10 +757,9 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_typography_header_line_height_text', array(
-			'label'       => __( 'Line Height', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_typography_header_line_height', array(
+			'label'       => esc_html__( 'Line Height', 'ikonwp' ),
 			'section'     => 'ikonwp_typography_header',
-			'settings'    => 'ikonwp_typography_header_line_height',
 			'type'        => 'number',
 			'input_attrs' => array(
 				'min'  => 0,
@@ -515,20 +768,86 @@ class IkonWP_Customize {
 		) );
 
 		/**
+		 * Blog
+		 * options
+		 */
+		$wp_customize->add_section( 'ikonwp_blog', array(
+			'title'      => esc_html__( 'Blog', 'ikonwp' ),
+			'priority'   => 105,
+			'capability' => 'edit_theme_options'
+		) );
+
+		/** blog - layout */
+		$wp_customize->add_setting( 'ikonwp_blog_layout', array(
+			'default'           => '',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_blog_layout', array(
+			'label'       => esc_html__( 'Layout', 'ikonwp' ),
+			'section'     => 'ikonwp_blog',
+			'type'        => 'select',
+			'choices'     => array(
+				''     => esc_html__( 'Default (List)', 'ikonwp' ),
+				'grid' => esc_html__( 'Grid', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the blog layout', 'ikonwp' )
+		) );
+
+		/** blog - grid columns */
+		$wp_customize->add_setting( 'ikonwp_blog_grid_columns', array(
+			'default'           => '2',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_blog_grid_columns', array(
+			'label'       => esc_html__( 'Grid Columns', 'ikonwp' ),
+			'section'     => 'ikonwp_blog',
+			'type'        => 'select',
+			'choices'     => array(
+				'2' => esc_html__( '2 columns', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the blog grid columns', 'ikonwp' )
+		) );
+
+		/**
 		 * Sidebars
 		 * options
 		 */
 		$wp_customize->add_panel( 'ikonwp_sidebars', array(
-			'title'    => __( 'Sidebars', 'ikonwp' ),
+			'title'    => esc_html__( 'Sidebars', 'ikonwp' ),
 			'priority' => 109
 		) );
 
 		/** sidebars - default */
 		$wp_customize->add_section( 'ikonwp_sidebars_post_type_default', array(
-			'title'      => __( 'Default', 'ikonwp' ),
+			'title'      => esc_html__( 'Default', 'ikonwp' ),
 			'panel'      => 'ikonwp_sidebars',
 			'priority'   => 1,
 			'capability' => 'edit_theme_options'
+		) );
+
+		/** sidebars - default - left sidebar - archive - display */
+		$wp_customize->add_setting( 'ikonwp_sidebars_post_type_default_left_sidebar_archive_display', array(
+			'default'           => '1',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_default_left_sidebar_archive_display', array(
+			'label'       => esc_html__( 'Left Sidebar - Archive - Display', 'ikonwp' ),
+			'section'     => 'ikonwp_sidebars_post_type_default',
+			'type'        => 'select',
+			'choices'     => array(
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the left sidebar display in archive template option', 'ikonwp' )
 		) );
 
 		/** sidebars - default - right sidebar - archive - display */
@@ -539,16 +858,34 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_sidebars_post_type_default_right_sidebar_archive_display_select', array(
-			'label'       => __( 'Right Sidebar - Archive - Display', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_default_right_sidebar_archive_display', array(
+			'label'       => esc_html__( 'Right Sidebar - Archive - Display', 'ikonwp' ),
 			'section'     => 'ikonwp_sidebars_post_type_default',
-			'settings'    => 'ikonwp_sidebars_post_type_default_right_sidebar_archive_display',
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'Disabled', 'ikonwp' ),
-				'1' => __( 'Enabled', 'ikonwp' )
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
 			),
-			'description' => __( 'Select the right sidebar display in archive template option', 'ikonwp' )
+			'description' => esc_html__( 'Select the right sidebar display in archive template option', 'ikonwp' )
+		) );
+
+		/** sidebars - default - left sidebar - singular - display */
+		$wp_customize->add_setting( 'ikonwp_sidebars_post_type_default_left_sidebar_singular_display', array(
+			'default'           => '1',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_default_left_sidebar_singular_display', array(
+			'label'       => esc_html__( 'Left Sidebar - Singular - Display', 'ikonwp' ),
+			'section'     => 'ikonwp_sidebars_post_type_default',
+			'type'        => 'select',
+			'choices'     => array(
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the left sidebar display in singular template option', 'ikonwp' )
 		) );
 
 		/** sidebars - default - right sidebar - singular - display */
@@ -559,24 +896,42 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_sidebars_post_type_default_right_sidebar_singular_display_select', array(
-			'label'       => __( 'Right Sidebar - Singular - Display', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_default_right_sidebar_singular_display', array(
+			'label'       => esc_html__( 'Right Sidebar - Singular - Display', 'ikonwp' ),
 			'section'     => 'ikonwp_sidebars_post_type_default',
-			'settings'    => 'ikonwp_sidebars_post_type_default_right_sidebar_singular_display',
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'Disabled', 'ikonwp' ),
-				'1' => __( 'Enabled', 'ikonwp' )
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
 			),
-			'description' => __( 'Select the right sidebar display in singular template option', 'ikonwp' )
+			'description' => esc_html__( 'Select the right sidebar display in singular template option', 'ikonwp' )
 		) );
 
 		/** sidebars - post */
 		$wp_customize->add_section( 'ikonwp_sidebars_post_type_post', array(
-			'title'      => __( 'Post', 'ikonwp' ),
+			'title'      => esc_html__( 'Post', 'ikonwp' ),
 			'panel'      => 'ikonwp_sidebars',
 			'priority'   => 2,
 			'capability' => 'edit_theme_options'
+		) );
+
+		/** sidebars - post - left sidebar - archive - display */
+		$wp_customize->add_setting( 'ikonwp_sidebars_post_type_post_left_sidebar_archive_display', array(
+			'default'           => '1',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_post_left_sidebar_archive_display', array(
+			'label'       => esc_html__( 'Left Sidebar - Archive - Display', 'ikonwp' ),
+			'section'     => 'ikonwp_sidebars_post_type_post',
+			'type'        => 'select',
+			'choices'     => array(
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the left sidebar display in archive template option', 'ikonwp' )
 		) );
 
 		/** sidebars - post - right sidebar - archive - display */
@@ -587,16 +942,34 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_sidebars_post_type_post_right_sidebar_archive_display_select', array(
-			'label'       => __( 'Right Sidebar - Archive - Display', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_post_right_sidebar_archive_display', array(
+			'label'       => esc_html__( 'Right Sidebar - Archive - Display', 'ikonwp' ),
 			'section'     => 'ikonwp_sidebars_post_type_post',
-			'settings'    => 'ikonwp_sidebars_post_type_post_right_sidebar_archive_display',
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'Disabled', 'ikonwp' ),
-				'1' => __( 'Enabled', 'ikonwp' )
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
 			),
-			'description' => __( 'Select the right sidebar display in archive template option', 'ikonwp' )
+			'description' => esc_html__( 'Select the right sidebar display in archive template option', 'ikonwp' )
+		) );
+
+		/** sidebars - post - left sidebar - singular - display */
+		$wp_customize->add_setting( 'ikonwp_sidebars_post_type_post_left_sidebar_singular_display', array(
+			'default'           => '1',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_post_left_sidebar_singular_display', array(
+			'label'       => esc_html__( 'Left Sidebar - Singular - Display', 'ikonwp' ),
+			'section'     => 'ikonwp_sidebars_post_type_post',
+			'type'        => 'select',
+			'choices'     => array(
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the left sidebar display in singular template option', 'ikonwp' )
 		) );
 
 		/** sidebars - post - right sidebar - singular - display */
@@ -607,24 +980,42 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_sidebars_post_type_post_right_sidebar_singular_display_select', array(
-			'label'       => __( 'Right Sidebar - Singular - Display', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_post_right_sidebar_singular_display', array(
+			'label'       => esc_html__( 'Right Sidebar - Singular - Display', 'ikonwp' ),
 			'section'     => 'ikonwp_sidebars_post_type_post',
-			'settings'    => 'ikonwp_sidebars_post_type_post_right_sidebar_singular_display',
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'Disabled', 'ikonwp' ),
-				'1' => __( 'Enabled', 'ikonwp' )
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
 			),
-			'description' => __( 'Select the right sidebar display in singular template option', 'ikonwp' )
+			'description' => esc_html__( 'Select the right sidebar display in singular template option', 'ikonwp' )
 		) );
 
 		/** sidebars - page */
 		$wp_customize->add_section( 'ikonwp_sidebars_post_type_page', array(
-			'title'      => __( 'Page', 'ikonwp' ),
+			'title'      => esc_html__( 'Page', 'ikonwp' ),
 			'panel'      => 'ikonwp_sidebars',
 			'priority'   => 3,
 			'capability' => 'edit_theme_options'
+		) );
+
+		/** sidebars - page - left sidebar - singular - display */
+		$wp_customize->add_setting( 'ikonwp_sidebars_post_type_page_left_sidebar_singular_display', array(
+			'default'           => '1',
+			'sanitize_callback' => 'ikonwp_sanitize_select',
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options'
+		) );
+
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_page_left_sidebar_singular_display', array(
+			'label'       => esc_html__( 'Left Sidebar - Singular - Display', 'ikonwp' ),
+			'section'     => 'ikonwp_sidebars_post_type_page',
+			'type'        => 'select',
+			'choices'     => array(
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
+			),
+			'description' => esc_html__( 'Select the left sidebar display in singular template option', 'ikonwp' )
 		) );
 
 		/** sidebars - page - right sidebar - singular - display */
@@ -635,16 +1026,15 @@ class IkonWP_Customize {
 			'capability'        => 'edit_theme_options'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_sidebars_post_type_page_right_sidebar_singular_display_select', array(
-			'label'       => __( 'Right Sidebar - Singular - Display', 'ikonwp' ),
+		$wp_customize->add_control( 'ikonwp_sidebars_post_type_page_right_sidebar_singular_display', array(
+			'label'       => esc_html__( 'Right Sidebar - Singular - Display', 'ikonwp' ),
 			'section'     => 'ikonwp_sidebars_post_type_page',
-			'settings'    => 'ikonwp_sidebars_post_type_page_right_sidebar_singular_display',
 			'type'        => 'select',
 			'choices'     => array(
-				'0' => __( 'Disabled', 'ikonwp' ),
-				'1' => __( 'Enabled', 'ikonwp' )
+				'0' => esc_html__( 'Disabled', 'ikonwp' ),
+				'1' => esc_html__( 'Enabled', 'ikonwp' )
 			),
-			'description' => __( 'Select the right sidebar display in singular template option', 'ikonwp' )
+			'description' => esc_html__( 'Select the right sidebar display in singular template option', 'ikonwp' )
 		) );
 
 		/**
@@ -652,24 +1042,23 @@ class IkonWP_Customize {
 		 * options
 		 */
 		$wp_customize->add_section( 'ikonwp_footer', array(
-			'title'      => __( 'Footer', 'ikonwp' ),
+			'title'      => esc_html__( 'Footer', 'ikonwp' ),
 			'priority'   => 110,
 			'capability' => 'edit_theme_options'
 		) );
 
 		/** footer - text */
 		$wp_customize->add_setting( 'ikonwp_footer_text', array(
-			'sanitize_callback' => 'sanitize_text_field',
+			'sanitize_callback' => 'wp_kses_post',
 			'type'              => 'theme_mod',
 			'capability'        => 'edit_theme_options',
 			'transport'         => 'postMessage'
 		) );
 
-		$wp_customize->add_control( 'ikonwp_footer_text_text', array(
-			'label'    => __( 'Footer Text', 'ikonwp' ),
-			'section'  => 'ikonwp_footer',
-			'settings' => 'ikonwp_footer_text',
-			'type'     => 'text'
+		$wp_customize->add_control( 'ikonwp_footer_text', array(
+			'label'   => esc_html__( 'Footer Text', 'ikonwp' ),
+			'section' => 'ikonwp_footer',
+			'type'    => 'text'
 		) );
 	}
 
@@ -762,11 +1151,11 @@ class IkonWP_Customize {
 				
 				.widget.widget_calendar #calendar_wrap table#wp-calendar caption {
 				  background: ' . $primary_color . ';
-				  border: 1px solid ' . $primary_color_hover . ';
+				  border: 1px solid ' . $primary_color . ';
 				}
 			';
 
-			wp_add_inline_style( 'ikonwp-theme', $custom_color_css );
+			wp_add_inline_style( 'ikonwp-theme-color', $custom_color_css );
 		}
 
 		/** header */
@@ -790,22 +1179,22 @@ class IkonWP_Customize {
 
 		/** header custom background color */
 		if ( 'custom_color' == $ikonwp_header_default_background_type ) {
-			wp_add_inline_style( 'ikonwp-theme', self::generate_css( '.header.bg--custom_color', 'background-color', 'ikonwp_header_default_background_color', '', '', '!important' ) );
+			wp_add_inline_style( 'ikonwp-theme-color', self::generate_css( '.header.bg--custom_color', 'background-color', 'ikonwp_header_default_background_color', '', '', '!important' ) );
 		}
 
 		/** navbar custom background color */
 		if ( 'custom_color' == $ikonwp_header_navbar_background_type ) {
-			wp_add_inline_style( 'ikonwp-theme', self::generate_css( '.header .header__navbar.bg--custom_color', 'background-color', 'ikonwp_header_navbar_background_color', '', '', '!important' ) );
+			wp_add_inline_style( 'ikonwp-theme-color', self::generate_css( '.header .header__navbar.bg--custom_color', 'background-color', 'ikonwp_header_navbar_background_color', '', '', '!important' ) );
 		}
 
 		/** header css selector */
-		$header_selector = array(
+		$header_text_custom_color_selector = array(
 			/** header */
 			'.header.text--custom_color'
 		);
 
 		/** header navbar css selector */
-		$header_navbar_selector = array(
+		$header_navbar_text_custom_color_selector = array(
 			/** header logo */
 			'.header.text--custom_color .header__navbar .header__logo, 
 			.header.text--custom_color .header__navbar .header__logo a,
@@ -820,9 +1209,9 @@ class IkonWP_Customize {
 			'.header.text--custom_color .header__navbar .navbar-nav .nav-link,
 			.header .header__navbar.text--custom_color .navbar-nav .nav-link',
 
-			/** header navbar nav mobile smartmenus */
-			'.header.text--custom_color .header__navbar .navbar-nav.sm-collapsible .dropdown .dropdown-menu .dropdown-item,
-			.header .header__navbar.text--custom_color .navbar-nav.sm-collapsible .dropdown .dropdown-menu .dropdown-item',
+			/** header html */
+			'.header.text--custom_color .header__navbar .header__html,
+			.header .header__navbar.text--custom_color .header__html',
 
 			/** header icons */
 			'.header.text--custom_color .header__navbar .header__icons, 
@@ -832,35 +1221,44 @@ class IkonWP_Customize {
 		);
 
 		/** header title css selector */
-		$header_title_selector = array(
+		$header_title_text_custom_color_selector = array(
 			/** header title */
 			'.header.text--custom_color .header__title',
 			'.header .header__title.text--custom_color'
 		);
 
-		/** header text color */
-		$header_text_color_selector = array( $header_selector );
+		/** check header text color */
+		if ( 'blank' !== get_theme_mod( 'header_textcolor', false ) ) {
 
-		/** add navbar text color to header default */
-		if ( ! get_theme_mod( 'ikonwp_header_navbar_text_color' ) ) {
-			$header_text_color_selector[] = $header_navbar_selector;
+			/** add header text color */
+			wp_add_inline_style( 'ikonwp-theme-color', self::generate_css( implode( ', ', array_merge( $header_text_custom_color_selector, $header_navbar_text_custom_color_selector, $header_title_text_custom_color_selector ) ), 'color', 'header_textcolor', '', '#', '!important' ) );
 		}
-
-		/** add title text color to header default */
-		if ( ! get_theme_mod( 'ikonwp_header_title_text_color' ) ) {
-			$header_text_color_selector[] = $header_title_selector;
-		}
-
-		wp_add_inline_style( 'ikonwp-theme', self::generate_css( implode( ', ', array_merge( $header_selector, $header_navbar_selector, $header_title_selector ) ), 'color', 'header_textcolor', '', '#', '!important' ) );
 
 		/** header navbar text color */
-		wp_add_inline_style( 'ikonwp-theme', self::generate_css( implode( ', ', $header_navbar_selector ), 'color', 'ikonwp_header_navbar_text_color', '', '', '!important' ) );
+		wp_add_inline_style( 'ikonwp-theme-color', self::generate_css( implode( ', ', $header_navbar_text_custom_color_selector ), 'color', 'ikonwp_header_navbar_text_color', '', '', '!important' ) );
 
 		/** header title text color */
-		wp_add_inline_style( 'ikonwp-theme', self::generate_css( implode( ', ', $header_title_selector ), 'color', 'ikonwp_header_title_text_color', '', '', '!important' ) );
+		wp_add_inline_style( 'ikonwp-theme-color', self::generate_css( implode( ', ', $header_title_text_custom_color_selector ), 'color', 'ikonwp_header_title_text_color', '', '', '!important' ) );
 
 		/** typography */
 		$google_fonts = ikonwp_get_google_fonts();
+
+		/** header typography selector */
+		$header_typography_selector = array(
+			'.header',
+
+			/** text and title tags */
+			'.header .header__text h1',
+			'.header .header__title h1',
+
+			/** h tags */
+			'.header h1',
+			'.header h2',
+			'.header h3',
+			'.header h4',
+			'.header h5',
+			'.header h6'
+		);
 
 		/** typography - body */
 		$ikonwp_typography_body_font_family  = get_theme_mod( 'ikonwp_typography_body_font_family', false );
@@ -869,16 +1267,16 @@ class IkonWP_Customize {
 
 		/** typography - body - font family */
 		if ( $ikonwp_typography_body_font_family ) {
-			$ikonwp_typography_google_fonts_id = sanitize_key( str_replace( ' ', '-', $ikonwp_typography_body_font_family ) );
+			$ikonwp_typography_body_google_fonts_id = sanitize_key( str_replace( ' ', '-', $ikonwp_typography_body_font_family ) );
 
 			$ikonwp_typography_body_google_fonts_url = 'https://fonts.googleapis.com/css?' . http_build_query( array(
-					'family'  => $ikonwp_typography_body_font_family . ':400,400i,500,500i,700,700i',
+					'family'  => $ikonwp_typography_body_font_family . ':100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i',
 					'display' => 'swap',
 					'subset'  => $ikonwp_typography_body_font_subsets
 				) );
 
-			wp_register_style( $ikonwp_typography_google_fonts_id . '-google-fonts', esc_url( $ikonwp_typography_body_google_fonts_url ) );
-			wp_enqueue_style( $ikonwp_typography_google_fonts_id . '-google-fonts' );
+			wp_register_style( $ikonwp_typography_body_google_fonts_id . '-google-fonts', esc_url( $ikonwp_typography_body_google_fonts_url ) );
+			wp_enqueue_style( $ikonwp_typography_body_google_fonts_id . '-google-fonts' );
 
 			wp_add_inline_style( 'ikonwp-theme', 'body {
 				font-family: ' . $google_fonts[ $ikonwp_typography_body_font_family ] . '
@@ -897,25 +1295,25 @@ class IkonWP_Customize {
 
 		/** typography - header - font family */
 		if ( $ikonwp_typography_header_font_family ) {
-			$ikonwp_typography_google_fonts_id = sanitize_key( str_replace( ' ', '-', $ikonwp_typography_header_font_family ) );
+			$ikonwp_typography_header_google_fonts_id = sanitize_key( str_replace( ' ', '-', $ikonwp_typography_header_font_family ) );
 
 			$ikonwp_typography_header_google_fonts_url = 'https://fonts.googleapis.com/css?' . http_build_query( array(
-					'family'  => $ikonwp_typography_header_font_family . ':400,400i,500,500i,700,700i',
+					'family'  => $ikonwp_typography_header_font_family . ':100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i',
 					'display' => 'swap',
 					'subset'  => $ikonwp_typography_header_font_subsets
 				) );
 
-			wp_register_style( $ikonwp_typography_google_fonts_id . '-google-fonts', esc_url( $ikonwp_typography_header_google_fonts_url ) );
-			wp_enqueue_style( $ikonwp_typography_google_fonts_id . '-google-fonts' );
+			wp_register_style( $ikonwp_typography_header_google_fonts_id . '-google-fonts', esc_url( $ikonwp_typography_header_google_fonts_url ) );
+			wp_enqueue_style( $ikonwp_typography_header_google_fonts_id . '-google-fonts' );
 
-			wp_add_inline_style( 'ikonwp-theme', '.header {
+			wp_add_inline_style( 'ikonwp-theme', implode( ', ', $header_typography_selector ) . '{
 				font-family: ' . $google_fonts[ $ikonwp_typography_header_font_family ] . '
 			}' );
 		}
 
 		/** typography - header - line height */
 		if ( $ikonwp_typography_header_line_height ) {
-			wp_add_inline_style( 'ikonwp-theme', self::generate_css( '.header', 'line-height', 'ikonwp_typography_header_line_height', '', '', '!important' ) );
+			wp_add_inline_style( 'ikonwp-theme', self::generate_css( implode( ', ', $header_typography_selector ), 'line-height', 'ikonwp_typography_header_line_height', '', '', '!important' ) );
 		}
 
 	}
@@ -968,6 +1366,36 @@ add_action( 'customize_preview_init', array( 'IkonWP_Customize', 'live_preview' 
 
 /**
  * IkonWP - Customize Controls
+ * get data contexts
+ */
+function ikonwp_customize_controls_get_data_contexts() {
+	$contexts = array(
+		'ikonwp_blog_grid_columns'              => array(
+			array(
+				'setting' => 'ikonwp_blog_layout',
+				'value'   => 'grid'
+			)
+		),
+		'ikonwp_header_builder_elements'        => array(
+			array(
+				'setting' => '__device',
+				'value'   => 'desktop'
+			)
+		),
+		'ikonwp_header_builder_mobile_elements' => array(
+			array(
+				'setting'  => '__device',
+				'operator' => 'in',
+				'value'    => array( 'tablet', 'mobile' )
+			)
+		)
+	);
+
+	return apply_filters( 'ikonwp_customize_controls_get_data_contexts', $contexts );
+}
+
+/**
+ * IkonWP - Customize Controls
  * scripts
  */
 function ikonwp_customize_controls_scripts() {
@@ -978,9 +1406,13 @@ function ikonwp_customize_controls_scripts() {
 	), IKONWP_VERSION, true );
 
 	wp_localize_script( 'ikonwp-customize-controls', 'ikonwp_l10n', array(
-		'ikonwp_label'           => __( 'IkonWP', 'ikonwp' ),
-		'post_type_label'        => __( 'Post Type', 'ikonwp' ),
-		'custom_post_type_label' => __( 'Custom Post Type', 'ikonwp' )
+		'ikonwp_label'           => esc_html__( 'IkonWP', 'ikonwp' ),
+		'post_type_label'        => esc_html__( 'Post Type', 'ikonwp' ),
+		'custom_post_type_label' => esc_html__( 'Custom Post Type', 'ikonwp' )
+	) );
+
+	wp_localize_script( 'ikonwp-customize-controls', 'ikonwp_customizer_controls_data', array(
+		'contexts' => ikonwp_customize_controls_get_data_contexts()
 	) );
 }
 
@@ -1047,7 +1479,7 @@ function ikonwp_sanitize_select( $value, $setting ) {
 	 * get select control
 	 * @var WP_Customize_Control $select_control
 	 */
-	$select_control = $setting->manager->get_control( $setting->id . '_select' );
+	$select_control = $setting->manager->get_control( $setting->id );
 
 	/** check choices */
 	if ( ! is_array( $select_control->choices ) ) {
@@ -1141,7 +1573,7 @@ function ikonwp_sanitize_google_fonts( $value, $setting ) {
 	 * get select control
 	 * @var WP_Customize_Control $select_control
 	 */
-	$select_control = $setting->manager->get_control( $setting->id . '_select' );
+	$select_control = $setting->manager->get_control( $setting->id );
 
 	/** check choices */
 	if ( ! is_array( $select_control->choices ) ) {
@@ -1154,6 +1586,174 @@ function ikonwp_sanitize_google_fonts( $value, $setting ) {
 	}
 
 	return $value;
+}
+
+/**
+ * validate number value
+ *
+ * @param string $number
+ * @param array $range
+ *
+ * @return string
+ */
+function ikonwp_validate_number( $number, $range ) {
+	if ( ! is_numeric( $number ) ) {
+		return '';
+	}
+
+	$step = empty( $range['step'] ) ? 1 : $range['step'];
+	$min  = empty( $range['min'] ) ? $number : $range['min'];
+	$max  = empty( $range['max'] ) ? $number : $range['max'];
+
+	if ( preg_match( '/\d*?\.(\d*)/', $step, $matches ) ) {
+		$decimal_count = strlen( $matches[1] );
+	} else {
+		$decimal_count = 0;
+	}
+
+	/** make sure the number is divisible by the step value */
+	if ( ! is_int( $number / $step ) ) {
+		$number = round( $number / $step, $decimal_count ) * $step;
+	}
+
+	/** make sure the number is not smaller than min value */
+	if ( $number < $min ) {
+		$number = $min;
+	}
+
+	/** make sure the number is not higher than max value */
+	if ( $number > $max ) {
+		$number = $max;
+	}
+
+	return $number;
+}
+
+/**
+ * validate dimension (number + unit) value
+ *
+ * @param string $dimension
+ * @param array $available_units
+ *
+ * @return string
+ */
+function ikonwp_validate_dimension( $dimension, $available_units ) {
+	$dimension_number = floatval( $dimension );
+	$dimension_unit   = str_replace( $dimension_number, '', $dimension );
+
+	/** check if no number found, then return empty string (without unit) */
+	if ( $dimension_unit === $dimension ) {
+		return '';
+	}
+
+	/** check if selected unit is invalid, then return empty string (without unit) */
+	if ( ! array_key_exists( $dimension_unit, $available_units ) ) {
+		return '';
+	}
+
+	$selected_unit = $available_units[ $dimension_unit ];
+
+	$dimension_number = ikonwp_validate_number( $dimension_number, $selected_unit );
+
+	/** check if number is invalid, then return empty string (without unit) */
+	if ( '' === $dimension_number ) {
+		return '';
+	}
+
+	$dimension = $dimension_number . $dimension_unit;
+
+	return $dimension;
+}
+
+/**
+ * sanitize dimension value
+ *
+ * @param string $value
+ * @param WP_Customize_Setting $setting
+ *
+ * @return string
+ */
+function ikonwp_sanitize_dimension( $value, $setting ) {
+	$control_id = preg_replace( '/__(tablet|mobile)/', '', $setting->id );
+
+	$control = $setting->manager->get_control( $control_id );
+
+	$value = ikonwp_validate_dimension( $value, $control->units );
+
+	return $value;
+}
+
+/**
+ * sanitize dimensions value
+ *
+ * @param string $value
+ * @param WP_Customize_Setting $setting
+ *
+ * @return string
+ */
+function ikonwp_sanitize_dimensions( $value, $setting ) {
+	if ( '' === trim( $value ) ) {
+		return '';
+	}
+
+	$control_id = preg_replace( '/__(tablet|mobile)/', '', $setting->id );
+
+	$control = $setting->manager->get_control( $control_id );
+
+	/** elaborate each property */
+	$props = explode( ' ', $value );
+	if ( 4 > count( $props ) ) {
+		return '';
+	}
+
+	/**
+	 * validate each property
+	 * @var int $i
+	 */
+	for ( $i = 0; $i < 4; $i ++ ) {
+		$props[ $i ] = ikonwp_validate_dimension( $props[ $i ], $control->units );
+	}
+
+	$value = implode( ' ', $props );
+
+	return $value;
+}
+
+/**
+ * sanitize builder value
+ *
+ * @param array $value
+ * @param WP_Customize_Setting $setting
+ *
+ * @return array
+ */
+function ikonwp_sanitize_builder( $value, $setting ) {
+	/** check input is an array */
+	$value = (array) $value;
+
+	$valid_id = preg_match( '/(.*?)_((?:top|main|bottom|vertical).*)/', $setting->id, $matches );
+
+	/** check setting id */
+	if ( ! $valid_id ) {
+		return array();
+	}
+
+	$control_id = $matches[1];
+	$location   = $matches[2];
+
+	$control = $setting->manager->get_control( $control_id );
+
+	foreach ( $value as $i => $slug ) {
+		if ( ! array_key_exists( $slug, $control->choices ) ) {
+			unset( $value[ $i ] );
+		}
+
+		if ( array_key_exists( $location, ikonwp_array_value( $control->limitations, $slug, array() ) ) ) {
+			unset( $value[ $i ] );
+		}
+	}
+
+	return array_values( $value );
 }
 
 /**
@@ -1254,6 +1854,29 @@ function ikonwp_wrapper_display_layout_class( $classes ) {
 add_filter( 'ikonwp_wrapper_class', 'ikonwp_wrapper_display_layout_class' );
 
 /**
+ * Add header top layout class to ikonwp header top container
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function ikonwp_header_top_container_header_top_layout_class( $classes ) {
+
+	if ( get_theme_mod( 'ikonwp_header_top_layout', 'full_width' ) == 'full_width' ) {
+		$classes[] = 'header__top--full_width';
+	}
+
+	if ( get_theme_mod( 'ikonwp_header_top_layout', 'full_width' ) == 'content_width' ) {
+		$classes[] = 'header__top--content_width';
+		$classes[] = 'container';
+	}
+
+	return $classes;
+}
+
+add_filter( 'ikonwp_header_top_container_class', 'ikonwp_header_top_container_header_top_layout_class' );
+
+/**
  * Add header navbar layout class to ikonwp header navbar container
  *
  * @param $classes
@@ -1321,7 +1944,9 @@ add_filter( 'ikonwp_header_class', 'ikonwp_header_background_type_class' );
  */
 function ikonwp_header_text_color_class( $classes ) {
 
-	if ( get_theme_mod( 'header_textcolor', false ) ) {
+	$header_textcolor = get_theme_mod( 'header_textcolor', false );
+
+	if ( $header_textcolor && 'blank' !== $header_textcolor ) {
 		$classes[] = 'text--custom_color';
 	}
 
@@ -1419,3 +2044,40 @@ function ikonwp_header_title_text_align_class( $classes ) {
 }
 
 add_filter( 'ikonwp_header_title_class', 'ikonwp_header_title_text_align_class' );
+
+/**
+ * Add header menu 1 brakpoint class to main navbar (alias menu 1)
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function ikonwp_header_menu_1_breakpoint_class( $classes ) {
+
+	$classes[] = 'navbar-expand-' . get_theme_mod( 'ikonwp_header_elements_menu_1_breakpoint', 'lg' );
+
+	return $classes;
+}
+
+add_filter( 'ikonwp_main_navbar_class', 'ikonwp_header_menu_1_breakpoint_class' );
+add_filter( 'ikonwp_main_navbar_mobile_class', 'ikonwp_header_menu_1_breakpoint_class' );
+
+/**
+ * Add col class to ikonwp post grid
+ *
+ * @param $classes
+ *
+ * @return array
+ */
+function ikonwp_post_grid_col_class( $classes ) {
+
+	$ikonwp_blog_grid_columns = get_theme_mod( 'ikonwp_blog_grid_columns', '2' );
+
+	if ( '2' == $ikonwp_blog_grid_columns ) {
+		$classes[] = 'col-md-6';
+	}
+
+	return $classes;
+}
+
+add_filter( 'ikonwp_post_grid_class', 'ikonwp_post_grid_col_class' );

@@ -4,8 +4,11 @@ Theme URI: https://ikonwp.com/
 Description: Ikon is the perfect theme for your website. Lightweight and highly extendable, fast, responsive, translation ready, vibrant color scheme, beautiful typography and works with the most popular page builder Elementor.
 Author: IkonWP Team
 Author URI: https://ikonwp.com/about/
-Version: 2.0.5
-Tags: one-column, two-columns, right-sidebar, custom-header, custom-menu, editor-style, featured-images, translation-ready
+Version: 3.1.0
+Tags: one-column, two-columns, three-columns, left-sidebar, right-sidebar, custom-background, custom-colors, custom-header, custom-menu, custom-logo, featured-images, flexible-header, footer-widgets, full-width-template, theme-options, translation-ready, blog
+
+Tested up to: 5.6
+Requires PHP: 5.6
 
 Text Domain: ikonwp
 Domain Path: /languages
@@ -13,6 +16,16 @@ Domain Path: /languages
 License: GNU General Public License version 3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
+
+/* =Page Templates
+-------------------------------------------------------------- */
+#content-100w {
+    padding: 0;
+}
+
+.container-100w {
+    padding: 0 20px;
+}
 
 /* =WordPress Core
 -------------------------------------------------------------- */
@@ -165,6 +178,18 @@ body.admin-bar .header {
     }
 }
 
+@media (min-width: 783px) {
+    body.admin-bar .header__navbar.fixed-top {
+        margin-top: 32px !important;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 782px) {
+    body.admin-bar .header__navbar.fixed-top {
+        margin-top: 46px !important;
+    }
+}
+
 /* =WordPress Blocks
 -------------------------------------------------------------- */
 .main figure.aligncenter {
@@ -173,4 +198,10 @@ body.admin-bar .header {
 
 .main .wp-block-image .aligncenter {
     display: table;
+}
+
+/* =Header Text Logo fix
+-------------------------------------------------------------- */
+.header .header__logo.header__text h1 {
+    white-space: normal;
 }

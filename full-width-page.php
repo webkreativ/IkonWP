@@ -1,15 +1,20 @@
-<?php get_header(); ?>
+<?php
+        /*
+        Template Name: Full Width Content
+        */
 
-    <main id="content" <?php ikonwp_main_class( array( 'main', 'section' ) ); ?> role="main">
-        <div class="container">
+get_header(); ?>
+
+    <main id="content-100w" <?php ikonwp_main_class( array( 'main', 'section' ) ); ?> role="main">
+        <div class="container-100w">
             <div class="row">
 
-	            <?php if ( is_active_sidebar( 'left' ) ) : ?>
+				<?php if ( is_active_sidebar( 'left' ) ) : ?>
                     <aside <?php ikonwp_left_sidebar_col_class( array( 'left-sidebar', 'widget-sidebar' ) ); ?>
                             role="complementary">
-			            <?php dynamic_sidebar( 'left' ); ?>
+						<?php dynamic_sidebar( 'left' ); ?>
                     </aside>
-	            <?php endif; ?>
+				<?php endif; ?>
 
                 <section <?php ikonwp_content_col_class(); ?>>
 
@@ -27,16 +32,6 @@
 							<?php the_post(); ?>
 
                             <article id="post-<?php the_ID(); ?>" <?php post_class( array( 'postbox' ) ); ?>>
-
-								<?php if ( has_post_thumbnail() && ! post_password_required() ) : ?>
-                                    <figure>
-                                        <a href="<?php the_permalink(); ?>">
-											<?php the_post_thumbnail( 'post-thumbnail', array(
-												'class' => 'img-fluid'
-											) ); ?>
-                                        </a>
-                                    </figure>
-								<?php endif; ?>
 
                                 <div class="post-content">
 									<?php the_content(); ?>

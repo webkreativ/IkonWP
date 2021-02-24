@@ -3,6 +3,9 @@
     background: #fff;
     color: #000;
   }
+  .header .header__top {
+    display: none;
+  }
   .header .header__navbar {
     display: none;
   }

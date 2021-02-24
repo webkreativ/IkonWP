@@ -5,65 +5,35 @@
 		'justify-content-between'
 	) ); ?>>
 
-        <nav id="ikonwp-main-navbar" <?php ikonwp_main_navbar_class( array(
-			'navbar',
-			'navbar-expand-xl'
-		) ); ?>>
+        <div class="header__navbar--left d-none d-lg-flex justify-content-start">
+			<?php ikonwp_header_builder_get_elements_html( 'main_left' ); ?>
+        </div>
+        <div class="header__navbar--center d-none d-lg-flex justify-content-center">
+			<?php ikonwp_header_builder_get_elements_html( 'main_center' ); ?>
+        </div>
+        <div class="header__navbar--right d-none d-lg-flex justify-content-end">
+			<?php ikonwp_header_builder_get_elements_html( 'main_right' ); ?>
+        </div>
 
-			<?php if ( has_custom_logo() ) : ?>
-                <div class="header__logo navbar-brand">
-					<?php the_custom_logo(); ?>
-                </div>
-			<?php else : ?>
-				<?php if ( display_header_text() ) : ?>
-                    <div class="header__logo header__text navbar-brand flex-column">
-                        <h1 class="header__blogname">
-                            <a href="<?php echo esc_url( home_url( '/' ) ); ?>"
-                               title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home">
-								<?php bloginfo( 'name' ); ?>
-                            </a>
-                        </h1>
-                        <small class="header__blogdescription">
-							<?php bloginfo( 'description' ); ?>
-                        </small>
-                    </div>
-				<?php endif; ?>
-			<?php endif; ?>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ikonwp-navbar"
-                    aria-controls="ikonwp-navbar" aria-expanded="false"
-                    aria-label="<?php esc_attr_e( 'Toggle navigation', 'ikonwp' ); ?>">
-                <i class="fa fa-bars"></i>
-                <i class="d-none fa fa-times"></i>
-                <span class="sr-only"><?php _e( 'Menu', 'ikonwp' ); ?></span>
-            </button>
-
-            <div id="ikonwp-navbar" class="navbar-collapse collapse">
-                <form class="header__mobile_search d-xl-none input-icon"
-                      action="<?php echo esc_url( home_url( '/' ) ); ?>" method="get">
-                    <input type="text" class="form-control" name="s" value="<?php the_search_query(); ?>"
-                           placeholder="<?php esc_attr_e( 'Find what you seek...', 'ikonwp' ); ?>"
-                           aria-label="<?php esc_attr_e( 'Find what you seek...', 'ikonwp' ); ?>"/>
-                    <button class="btn">
-                        <i class="fa fa-search"></i>
-                        <span class="sr-only"><?php _e( 'Search', 'ikonwp' ); ?></span>
-                    </button>
-                </form>
-
-				<?php ikonwp_main_nav_menu(); ?>
-            </div>
-        </nav>
-
-        <ul class="header__icons">
-            <li class="d-none d-xl-block">
-                <a href="#" data-toggle="header-search">
-                    <i class="fa fa-search"></i>
-                    <i class="d-none fa fa-times"></i>
-                    <span class="sr-only"><?php _e( 'Search', 'ikonwp' ); ?></span>
-                </a>
-            </li>
-        </ul>
+        <div class="header__navbar--left header__navbar_mobile--left d-flex d-lg-none justify-content-start">
+			<?php ikonwp_header_builder_mobile_get_elements_html( 'main_left' ); ?>
+        </div>
+        <div class="header__navbar--center header__navbar_mobile--center d-flex d-lg-none justify-content-center">
+			<?php ikonwp_header_builder_mobile_get_elements_html( 'main_center' ); ?>
+        </div>
+        <div class="header__navbar--right header__navbar_mobile--right d-flex d-lg-none justify-content-end">
+			<?php ikonwp_header_builder_mobile_get_elements_html( 'main_right' ); ?>
+        </div>
     </div>
+
+    <nav id="ikonwp-main-navbar-mobile" <?php ikonwp_main_navbar_class( array(
+		'navbar',
+		'navbar__mobile',
+		'navbar-collapse',
+		'collapse'
+	) ); ?>>
+		<?php ikonwp_main_nav_menu(); ?>
+    </nav>
 
     <form id="header-search" class="header__search d-none input-icon"
           action="<?php echo esc_url( home_url( '/' ) ); ?>" method="get">
@@ -71,7 +41,7 @@
                placeholder="<?php esc_attr_e( 'Find what you seek...', 'ikonwp' ); ?>"
                aria-label="<?php esc_attr_e( 'Find what you seek...', 'ikonwp' ); ?>"/>
         <button class="btn">
-            <i class="fa fa-search"></i>
+            <i class="icon-search-line"></i>
             <span class="sr-only"><?php _e( 'Search', 'ikonwp' ); ?></span>
         </button>
     </form>
